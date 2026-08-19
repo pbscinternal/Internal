@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PBSC Internal Tournament 2026 - 4th Anniversary</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                            dark: '#0B0F19',
+                            card: '#111827',
+                            cardBorder: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .glass-panel { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .glow-blue { box-shadow: 0 0 25px rgba(37, 99, 235, 0.25); }
+    </style>
+</head>
+<body class="bg-[#0B0F19] text-gray-100 min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-4 cursor-pointer" onclick="switchTab('home')">
+                <img src="/pbsc_logo.jpg" alt="PBSC Logo" class="h-12 w-12 rounded-full border-2 border-blue-500 shadow-md object-cover">
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-blue-200 to-blue-500 bg-clip-text text-transparent">PBSC</h1>
+                    <p class="text-xs text-blue-400 font-semibold tracking-widest uppercase">Internal Tournament</p>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 lg:space-x-2">
+                <button onclick="switchTab('home')" id="nav-home" class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition text-blue-400 bg-blue-900/30 border border-blue-500/30">
+                    <i class="fa-solid fa-house mr-1.5"></i> Beranda
+                </button>
+                <button onclick="switchTab('teams')" id="nav-teams" class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition text-gray-400 hover:text-white hover:bg-gray-800">
+                    <i class="fa-solid fa-users mr-1.5"></i> Tim
+                </button>
+                <button onclick="switchTab('players')" id="nav-players" class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition text-gray-400 hover:text-white hover:bg-gray-800">
+                    <i class="fa-solid fa-user-group mr-1.5"></i> Pemain
+                </button>
+                <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition text-gray-400 hover:text-white hover:bg-gray-800">
+                    <i class="fa-solid fa-calendar-days mr-1.5"></i> Jadwal & Hasil
+                </button>
+                <button onclick="switchTab('standings')" id="nav-standings" class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition text-gray-400 hover:text-white hover:bg-gray-800">
+                    <i class="fa-solid fa-trophy mr-1.5"></i> Klasemen
+                </button>
+                <button onclick="switchTab('rules')" id="nav-rules" class="nav-link px-3 py-2 rounded-lg text-sm font-medium transition text-gray-400 hover:text-white hover:bg-gray-800">
+                    <i class="fa-solid fa-book mr-1.5"></i> Aturan
+                </button>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="switchTab('admin')" id="nav-admin" class="bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs px-4 py-2.5 rounded-lg shadow-lg transition flex items-center space-x-2 border border-blue-400/30">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span class="hidden sm:inline">Panel Admin</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Bar -->
+        <div class="md:hidden flex overflow-x-auto py-2.5 px-4 bg-gray-950 border-t border-gray-800 space-x-2 text-xs font-medium">
+            <button onclick="switchTab('home')" class="px-3 py-1.5 rounded-md whitespace-nowrap bg-gray-800 text-gray-200">Beranda</button>
+            <button onclick="switchTab('teams')" class="px-3 py-1.5 rounded-md whitespace-nowrap bg-gray-800 text-gray-200">Tim</button>
+            <button onclick="switchTab('players')" class="px-3 py-1.5 rounded-md whitespace-nowrap bg-gray-800 text-gray-200">Pemain</button>
+            <button onclick="switchTab('schedule')" class="px-3 py-1.5 rounded-md whitespace-nowrap bg-gray-800 text-gray-200">Jadwal</button>
+            <button onclick="switchTab('standings')" class="px-3 py-1.5 rounded-md whitespace-nowrap bg-gray-800 text-gray-200">Klasemen</button>
+            <button onclick="switchTab('rules')" class="px-3 py-1.5 rounded-md whitespace-nowrap bg-gray-800 text-gray-200">Aturan</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- TAB 1: BERANDA (HOME) -->
+        <section id="tab-home" class="tab-content space-y-8">
+            <!-- HERO BANNER -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-900 via-slate-900 to-gray-950 p-8 sm:p-12 border border-blue-500/20 shadow-2xl">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-blue-400 pointer-events-none">
+                    <i class="fa-solid fa-shuttlecock text-[260px]"></i>
+                </div>
+                <div class="relative z-10 max-w-2xl space-y-4">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold uppercase tracking-widest">
+                        <span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
+                        <span>Official Internal Tournament Platform</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight uppercase">
+                        PBSC Internal Tournament 2026 - 4th Anniversary
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                        Sistem manajemen turnamen bulutangkis internal PBSC. Total 24 pemain terbagi dalam 4 tim seimbang, dengan aturan susunan partai berdasarkan Power Point Tier dan sanksi keterlambatan 5 poin.
+                    </p>
+                    <div class="pt-2 flex flex-wrap gap-4">
+                        <button onclick="switchTab('schedule')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-calendar-alt"></i>
+                            <span>Lihat Jadwal Match</span>
+                        </button>
+                        <button onclick="switchTab('standings')" class="bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 font-bold px-6 py-3 rounded-xl transition flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-trophy text-yellow-500"></i>
+                            <span>Papan Klasemen</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TOURNAMENT SUMMARY STATS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center space-x-4">
+                    <div class="p-3.5 bg-blue-600/20 text-blue-400 rounded-xl">
+                        <i class="fa-solid fa-shield-halved text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Total Tim</p>
+                        <p id="stat-teams" class="text-2xl font-black text-white">4</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center space-x-4">
+                    <div class="p-3.5 bg-emerald-600/20 text-emerald-400 rounded-xl">
+                        <i class="fa-solid fa-users text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Total Pemain</p>
+                        <p id="stat-players" class="text-2xl font-black text-white">0 / 24</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center space-x-4">
+                    <div class="p-3.5 bg-amber-600/20 text-amber-400 rounded-xl">
+                        <i class="fa-solid fa-gamepad text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Total Match Tie</p>
+                        <p id="stat-matches" class="text-2xl font-black text-white">8 Tie</p>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex items-center space-x-4">
+                    <div class="p-3.5 bg-rose-600/20 text-rose-400 rounded-xl">
+                        <i class="fa-solid fa-clock text-2xl"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs font-medium text-gray-400">Penalty Poin</p>
+                        <p class="text-2xl font-black text-rose-400">-5 Poin</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEADERBOARD PREVIEW & QUICK ACTIONS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Klasemen Singkat -->
+                <div class="lg:col-span-2 glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                        <div class="flex items-center space-x-3">
+                            <i class="fa-solid fa-ranking-star text-yellow-500 text-xl"></i>
+                            <h3 class="text-lg font-bold text-white">Klasemen Sementara</h3>
+                        </div>
+                        <button onclick="switchTab('standings')" class="text-xs text-blue-400 hover:text-blue-300 font-semibold flex items-center space-x-1">
+                            <span>Selengkapnya</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                    <div id="home-standings-list" class="space-y-3">
+                        <div class="text-center py-6 text-gray-500 text-sm">Loading klasemen...</div>
+                    </div>
+                </div>
+
+                <!-- Quick Rules & Quick Seed Info -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4 pb-4 border-b border-gray-800">
+                            <i class="fa-solid fa-circle-info text-blue-400 text-xl"></i>
+                            <h3 class="text-lg font-bold text-white">Ketentuan Format</h3>
+                        </div>
+                        <ul class="space-y-3 text-xs text-gray-300">
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
+                                <span><strong>4 Tim, 24 Pemain</strong> (6 orang per tim: 1 A1, 1 A2, 2 B, 1 C1, 1 C2).</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
+                                <span><strong>Kontrol Match Admin</strong>: Admin menentukan tim yang bertanding di setiap match, menyusun ganda, dan menginput skor.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
+                                <span><strong>Pengurutan Partai</strong>: Pengurutan berdasarkan akumulasi poin. Jika total poin sama (misal 5+2=7 vs 3+4=7), pasangan dengan pemain ber-poin tertinggi (5+2) bertanding lebih dulu di Partai 1.</span>
+                            </li>
+                            <li class="flex items-start space-x-2">
+                                <i class="fa-solid fa-check text-rose-400 mt-0.5"></i>
+                                <span><strong>Penalty Terlambat</strong>: Sanksi skor awal 0 - 5 (lawan unggul 5-0) khusus match dimana pemain terlambat tampil.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-800">
+                        <button onclick="switchTab('admin')" class="w-full py-3 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-sliders"></i>
+                            <span>Buka Admin Panel</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: TIM (TEAMS) -->
+        <section id="tab-teams" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Daftar Tim PBSC</h2>
+                    <p class="text-xs text-gray-400">Total 4 Tim peserta turnamen bulutangkis PBSC</p>
+                </div>
+                <button onclick="switchTab('admin')" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition">
+                    <i class="fa-solid fa-plus mr-1"></i> Kelola Tim & Pemain (Admin)
+                </button>
+            </div>
+
+            <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Team cards populated by JS -->
+            </div>
+        </section>
+
+        <!-- TAB 3: PEMAIN (PLAYERS) -->
+        <section id="tab-players" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Daftar Pemain</h2>
+                    <p class="text-xs text-gray-400">Klasifikasi Tier & Power Point Pemain (A1=5, A2=4, B=3, C1=2, C2=1)</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <select id="player-filter-team" onchange="renderPlayers()" class="bg-gray-900 border border-gray-700 text-xs rounded-xl px-3 py-2 text-gray-200">
+                        <option value="">Semua Tim</option>
+                    </select>
+                    <button onclick="switchTab('admin')" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition">
+                        <i class="fa-solid fa-user-plus mr-1"></i> Tambah Pemain
+                    </button>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-gray-900 text-xs uppercase text-gray-400 border-b border-gray-800">
+                            <tr>
+                                <th class="py-4 px-6">#</th>
+                                <th class="py-4 px-6">Nama Pemain</th>
+                                <th class="py-4 px-6">Tim</th>
+                                <th class="py-4 px-6 text-center">Tier</th>
+                                <th class="py-4 px-6 text-center">Power Point</th>
+                                <th class="py-4 px-6 text-center">Status Kehadiran</th>
+                            </tr>
+                        </thead>
+                        <tbody id="players-table-body" class="divide-y divide-gray-800/60">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: JADWAL & HASIL (SCHEDULE) -->
+        <section id="tab-schedule" class="tab-content hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white">Jadwal & Hasil Pertandingan</h2>
+                    <p class="text-xs text-gray-400">Admin menentukan tim bertanding, susunan pasangan, & menginput skor</p>
+                </div>
+                <div class="flex space-x-2">
+                    <button onclick="filterSchedule('all')" id="sched-btn-all" class="sched-filter-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white">Semua Stage</button>
+                    <button onclick="filterSchedule('group')" id="sched-btn-group" class="sched-filter-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">Group Stage</button>
+                    <button onclick="filterSchedule('playoff')" id="sched-btn-playoff" class="sched-filter-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">Playoff Final</button>
+                </div>
+            </div>
+
+            <div id="schedule-list" class="space-y-6">
+                <!-- Matches populated by JS -->
+            </div>
+        </section>
+
+        <!-- TAB 5: KLASEMEN (STANDINGS) -->
+        <section id="tab-standings" class="tab-content hidden space-y-6">
+            <div class="border-b border-gray-800 pb-4">
+                <h2 class="text-2xl font-black text-white">Papan Klasemen Utama</h2>
+                <p class="text-xs text-gray-400">Perhitungan Realtime: Menang Tie -> Selisih Partai Ganda -> Selisih Poin</p>
+            </div>
+
+            <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-300">
+                        <thead class="bg-gray-900 text-xs uppercase text-gray-400 border-b border-gray-800">
+                            <tr>
+                                <th class="py-4 px-4 text-center">Pos</th>
+                                <th class="py-4 px-6">Tim</th>
+                                <th class="py-4 px-4 text-center">Main</th>
+                                <th class="py-4 px-4 text-center">Menang</th>
+                                <th class="py-4 px-4 text-center">Kalah</th>
+                                <th class="py-4 px-4 text-center">Partai (M-K)</th>
+                                <th class="py-4 px-4 text-center">Diff Partai</th>
+                                <th class="py-4 px-4 text-center">Poin (+/-)</th>
+                                <th class="py-4 px-4 text-center">Diff Poin</th>
+                                <th class="py-4 px-6 text-center">Status Playoff</th>
+                            </tr>
+                        </thead>
+                        <tbody id="standings-table-body" class="divide-y divide-gray-800/60 font-medium">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: ATURAN (RULES) -->
+        <section id="tab-rules" class="tab-content hidden space-y-8">
+            <div class="border-b border-gray-800 pb-4">
+                <h2 class="text-2xl font-black text-white">Aturan Turnamen PBSC</h2>
+                <p class="text-xs text-gray-400">Ketentuan resmi komposisi tim, tier power point, susunan partai, dan penalty keterlambatan</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Card 1: Komposisi Tim & Player Tier -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-blue-400">
+                        <i class="fa-solid fa-users-gear text-2xl"></i>
+                        <h3 class="text-lg font-bold text-white">1. Flow Tim & Komposisi Tier</h3>
+                    </div>
+                    <ul class="space-y-2 text-xs text-gray-300 leading-relaxed">
+                        <li>• <strong>Flow Pembuatan Tim</strong>: Nama tim dibuat tanpa menentukan kapten terlebih dahulu. Kapten tim dipilih setelah roster pemain terdaftar.</li>
+                        <li>• Total <strong>24 pemain</strong> dibagi ke dalam <strong>4 tim</strong> (6 pemain/tim: 1 A1, 1 A2, 2 B, 1 C1, 1 C2).</li>
+                        <li>• Skala Power Point Tier:
+                            <div class="mt-2 grid grid-cols-5 gap-2 text-center font-bold">
+                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">A1</span>: 5</div>
+                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">A2</span>: 4</div>
+                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">B</span>: 3</div>
+                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">C1</span>: 2</div>
+                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">C2</span>: 1</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Card 2: Aturan Susunan Partai -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-amber-400">
+                        <i class="fa-solid fa-list-ol text-2xl"></i>
+                        <h3 class="text-lg font-bold text-white">2. Komposisi Susunan Partai</h3>
+                    </div>
+                    <p class="text-xs text-gray-300 leading-relaxed">
+                        Setiap duel tim terdiri dari <strong>3 partai ganda</strong>. Pengurutan partai diatur berdasarkan akumulasi power point pasangan.
+                    </p>
+                    <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 text-xs text-gray-300 space-y-1.5">
+                        <p class="font-bold text-amber-400"><i class="fa-solid fa-lightbulb mr-1"></i> Ketentuan Poin Sama:</p>
+                        <p>Jika terdapat 2 partai dalam 1 tim dengan total power poin sama (contoh <code>5+2 = 7</code> dan <code>3+4 = 7</code>), maka yang bertanding di susunan partai pertama (Partai Ke-1) adalah partai dengan member yang memiliki point tertinggi, yaitu <code>5+2</code>.</p>
+                    </div>
+                </div>
+
+                <!-- Card 3: Urutan Match Schedule -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-emerald-400">
+                        <i class="fa-solid fa-sitemap text-2xl"></i>
+                        <h3 class="text-lg font-bold text-white">3. Penentuan Tim & Match Schedule</h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 space-y-1">
+                            <p class="font-bold text-emerald-400">Group Stage (Round Robin):</p>
+                            <p>Admin memilih Tim 1 vs Tim 2 untuk setiap Match (Match 1 s.d 6).</p>
+                        </div>
+                        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 space-y-1">
+                            <p class="font-bold text-emerald-400">Final Stage (Playoff):</p>
+                            <p>• <strong>Final Juara 1</strong>: 2 Tim teratas.</p>
+                            <p>• <strong>Perebutan Juara 3</strong>: 2 Tim terbawah.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Penalty Keterlambatan -->
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
+                    <div class="flex items-center space-x-3 text-rose-400">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                        <h3 class="text-lg font-bold text-white">4. Penalty Keterlambatan</h3>
+                    </div>
+                    <div class="bg-rose-950/40 p-4 rounded-xl border border-rose-800/40 text-xs text-rose-200 space-y-2">
+                        <p class="font-bold">Ketentuan Penalty Poin (5 Poin):</p>
+                        <p>Untuk pemain yang tidak hadir tepat waktu, akan dikenakan <strong>penalty 5 poin</strong> untuk setiap match group stage / playoff yang mana pemain tersebut bertanding.</p>
+                        <p class="text-gray-300 italic">Contoh: Jika "Budi" di Tim 1 terlambat hadir, maka setiap match dimana Budi bertanding, game akan dimulai dengan skor <strong>0 - 5</strong> untuk keunggulan lawan. Sedangkan match pemain lain yang tidak terlambat tidak terkena penalty poin (dimulai dari 0-0).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: ADMIN PANEL -->
+        <section id="tab-admin" class="tab-content hidden space-y-8">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center space-x-3">
+                        <i class="fa-solid fa-user-shield text-blue-500"></i>
+                        <span>Panel Administrasi Turnamen</span>
+                    </h2>
+                    <p class="text-xs text-gray-400">Tahap 1: Buat Nama Tim -> Tahap 2: Tambah Pemain -> Tahap 3: Pilih Kapten Tim</p>
+                </div>
+
+                <div class="flex items-center space-x-3">
+                    <button onclick="seedSampleData()" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Seed Data Contoh
+                    </button>
+                    <button onclick="resetData()" class="bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition">
+                        <i class="fa-solid fa-trash-arrow-up mr-1"></i> Kosongkan Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- ADMIN TABS / SECTIONS -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- KELOLA TIM & PEMAIN FORM -->
+                <div class="space-y-6">
+                    <!-- Form Tim (Langkah 1: Buat Tim Tanpa Kapten) -->
+                    <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950 border border-blue-800 px-2 py-0.5 rounded">Langkah 1</span>
+                            <h3 class="text-sm font-bold text-white flex items-center space-x-2 mt-1">
+                                <i class="fa-solid fa-shield-cat text-blue-400"></i>
+                                <span>Buat / Ubah Nama Tim</span>
+                            </h3>
+                        </div>
+                        <form id="form-team" onsubmit="handleTeamSubmit(event)" class="space-y-3 text-xs">
+                            <input type="hidden" id="team-form-id">
+                            <div>
+                                <label class="block font-semibold mb-1 text-gray-300">Nama Tim</label>
+                                <input type="text" id="team-form-name" placeholder="Contoh: Tim Alpha" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div>
+                                <label class="block font-semibold mb-1 text-gray-300">Warna Badge / Identitas</label>
+                                <input type="color" id="team-form-color" value="#2563eb" class="w-full h-9 bg-gray-900 border border-gray-700 rounded-xl p-1 cursor-pointer">
+                            </div>
+                            <div class="flex space-x-2 pt-2">
+                                <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-xl transition">Simpan Tim</button>
+                                <button type="button" onclick="resetTeamForm()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-3 py-2 rounded-xl transition">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Form Pemain (Langkah 2: Tambah Pemain sambil memilih Tim yang terdaftar) -->
+                    <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950 border border-emerald-800 px-2 py-0.5 rounded">Langkah 2</span>
+                            <h3 class="text-sm font-bold text-white flex items-center space-x-2 mt-1">
+                                <i class="fa-solid fa-user-plus text-emerald-400"></i>
+                                <span>Tambah Pemain ke Tim</span>
+                            </h3>
+                        </div>
+                        <form id="form-player" onsubmit="handlePlayerSubmit(event)" class="space-y-3 text-xs">
+                            <input type="hidden" id="player-form-id">
+                            <div>
+                                <label class="block font-semibold mb-1 text-gray-300">Nama Pemain</label>
+                                <input type="text" id="player-form-name" placeholder="Nama Pemain" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block font-semibold mb-1 text-gray-300">Pilih Tim Terdaftar</label>
+                                    <select id="player-form-team" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white">
+                                        <!-- Populated by JS -->
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block font-semibold mb-1 text-gray-300">Tier Power Point</label>
+                                    <select id="player-form-tier" required class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-white">
+                                        <option value="A1">A1 (Point: 5)</option>
+                                        <option value="A2">A2 (Point: 4)</option>
+                                        <option value="B" selected>B (Point: 3)</option>
+                                        <option value="C1">C1 (Point: 2)</option>
+                                        <option value="C2">C2 (Point: 1)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2 pt-1">
+                                <input type="checkbox" id="player-form-late" class="w-4 h-4 text-rose-600 bg-gray-900 border-gray-700 rounded focus:ring-rose-500">
+                                <label for="player-form-late" class="font-semibold text-rose-400">Tandai Terlambat (Penalty -5 Poin)</label>
+                            </div>
+                            <div class="flex space-x-2 pt-2">
+                                <button type="submit" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl transition">Simpan Pemain</button>
+                                <button type="button" onclick="resetPlayerForm()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-3 py-2 rounded-xl transition">Batal</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ADMIN DATA MANAGEMENT LISTS & STEP 3: KAPTEN TIM -->
+                <div class="lg:col-span-2 space-y-6">
+
+                    <!-- AUTO LINEUP GENERATOR TRIGGER -->
+                    <div class="glass-panel p-5 rounded-2xl border border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-blue-950/40 via-gray-900 to-gray-950">
+                        <div>
+                            <h4 class="text-sm font-bold text-white flex items-center space-x-2">
+                                <i class="fa-solid fa-microchip text-blue-400"></i>
+                                <span>Generator Susunan Partai Otomatis</span>
+                            </h4>
+                            <p class="text-xs text-gray-400">Menyusun ganda secara otomatis sesuai aturan total poin & prioritas poin tertinggi.</p>
+                        </div>
+                        <button onclick="triggerAutoLineup()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow-lg transition flex items-center space-x-2 whitespace-nowrap">
+                            <i class="fa-solid fa-play"></i>
+                            <span>Generate Lineup Semua Match</span>
+                        </button>
+                    </div>
+
+                    <!-- MANAGED PLAYERS LIST TABLE -->
+                    <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden space-y-3 p-5">
+                        <h4 class="text-sm font-bold text-white flex items-center justify-between">
+                            <span>Daftar Pemain & Penalty Manager</span>
+                            <span id="admin-player-count-badge" class="text-xs bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-0.5 rounded-full">0 / 24 Pemain</span>
+                        </h4>
+                        <div class="overflow-x-auto max-h-[400px]">
+                            <table class="w-full text-left text-xs text-gray-300">
+                                <thead class="bg-gray-900 sticky top-0 uppercase text-gray-400">
+                                    <tr>
+                                        <th class="py-2.5 px-3">Nama</th>
+                                        <th class="py-2.5 px-3">Tim</th>
+                                        <th class="py-2.5 px-3 text-center">Tier (Point)</th>
+                                        <th class="py-2.5 px-3 text-center">Status Late</th>
+                                        <th class="py-2.5 px-3 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="admin-players-tbody" class="divide-y divide-gray-800">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- MODAL SCORE INPUT & DETAIL SHEET -->
+    <div id="modal-score" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-panel max-w-3xl w-full rounded-3xl border border-gray-800 shadow-2xl overflow-hidden space-y-6 p-6 sm:p-8">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                <div>
+                    <h3 id="modal-score-title" class="text-lg font-bold text-white">Scoresheet & Match Editor</h3>
+                    <p id="modal-score-sub" class="text-xs text-gray-400">Pilih Tim Bertanding, Pasangan Pemain, & Input Skor</p>
+                </div>
+                <button onclick="closeScoreModal()" class="text-gray-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- ADMIN TIE TEAM SELECTOR -->
+            <div class="bg-gray-950 p-4 rounded-2xl border border-gray-800/80 space-y-2">
+                <p class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center space-x-1.5">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>Tentukan Tim Bertanding untuk Match Ini (Admin):</span>
+                </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-[11px] font-semibold text-gray-400 block mb-1">Tim 1 (Home)</label>
+                        <select id="modal-tie-team1" onchange="onModalTeamChange()" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs font-bold text-white">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[11px] font-semibold text-gray-400 block mb-1">Tim 2 (Away)</label>
+                        <select id="modal-tie-team2" onchange="onModalTeamChange()" class="w-full bg-gray-900 border border-gray-700 rounded-xl px-3 py-2 text-xs font-bold text-white">
+                            <!-- Populated by JS -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal-score-body" class="space-y-6 max-h-[60vh] overflow-y-auto pr-1">
+                <!-- Matches scores forms populated by JS -->
+            </div>
+
+            <div class="flex justify-end border-t border-gray-800 pt-4">
+                <button onclick="closeScoreModal()" class="bg-gray-800 hover:bg-gray-700 text-gray-200 px-5 py-2 rounded-xl text-xs font-bold transition">Selesai / Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-gray-800 py-6 mt-12 bg-gray-950/80 text-center text-xs text-gray-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <img src="/pbsc_logo.jpg" alt="PBSC" class="h-6 w-6 rounded-full">
+                <span class="font-bold text-gray-400">PBSC Internal Tournament 2026 - 4th Anniversary</span>
+            </div>
+            <p>Sistem Kompetisi Bulutangkis 24 Pemain 4 Tim - Aturan Power Point & Penalty Keterlambatan</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APPLICATION CODE -->
+    <script>
+        let state = {
+            settings: {},
+            teams: [],
+            players: [],
+            ties: [],
+            standings: []
+        };
+
+        let currentActiveTieId = null;
+
+        const tierPoints = { 'A1': 5, 'A2': 4, 'B': 3, 'C1': 2, 'C2': 1 };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchData();
+        });
+
+        async function fetchData() {
+            try {
+                const res = await fetch('/api/data');
+                const data = await res.json();
+                state = data;
+                renderAll();
+            } catch (err) {
+                console.error("Error fetching data:", err);
+            }
+        }
+
+        function renderAll() {
+            renderStats();
+            renderHomeStandings();
+            renderTeams();
+            renderPlayers();
+            renderSchedule();
+            renderStandings();
+            renderAdmin();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-link').forEach(el => {
+                el.classList.remove('text-blue-400', 'bg-blue-900/30', 'border', 'border-blue-500/30');
+                el.classList.add('text-gray-400');
+            });
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) activeTab.classList.remove('hidden');
+
+            const activeNav = document.getElementById(`nav-${tabId}`);
+            if (activeNav) {
+                activeNav.classList.remove('text-gray-400');
+                activeNav.classList.add('text-blue-400', 'bg-blue-900/30', 'border', 'border-blue-500/30');
+            }
+        }
+
+        function renderStats() {
+            document.getElementById('stat-teams').innerText = state.teams.length;
+            document.getElementById('stat-players').innerText = `${state.players.length} / 24`;
+            const completedCount = state.ties.filter(t => t.status === 'Completed').length;
+            document.getElementById('stat-matches').innerText = `${completedCount} / ${state.ties.length} Tie`;
+        }
+
+        function renderHomeStandings() {
+            const container = document.getElementById('home-standings-list');
+            if (!state.standings || state.standings.length === 0) {
+                container.innerHTML = `<div class="text-center py-6 text-gray-500 text-sm">Belum ada tim terdaftar. Silakan buat tim di Admin Panel.</div>`;
+                return;
+            }
+            container.innerHTML = state.standings.slice(0, 4).map((s, idx) => `
+                <div class="flex items-center justify-between p-3.5 rounded-xl bg-gray-900/80 border border-gray-800">
+                    <div class="flex items-center space-x-3">
+                        <span class="w-7 h-7 rounded-full ${idx === 0 ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-gray-800 text-gray-400'} text-xs font-black flex items-center justify-center">${idx + 1}</span>
+                        <div class="w-3 h-3 rounded-full" style="background-color: ${s.team.color || '#2563eb'}"></div>
+                        <span class="font-bold text-sm text-white">${s.team.name}</span>
+                    </div>
+                    <div class="flex items-center space-x-4 text-xs font-semibold text-gray-300">
+                        <span>Main: <strong>${s.played}</strong></span>
+                        <span class="text-emerald-400">Menang: <strong>${s.wins}</strong></span>
+                        <span class="text-blue-400">Diff Partai: <strong>${s.partai_diff > 0 ? '+' : ''}${s.partai_diff}</strong></span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTeams() {
+            const grid = document.getElementById('teams-grid');
+            if (state.teams.length === 0) {
+                grid.innerHTML = `<div class="col-span-2 glass-panel p-8 rounded-2xl text-center text-gray-500 text-sm">Belum ada tim terdaftar. Gunakan Admin Panel untuk menambah tim baru.</div>`;
+                return;
+            }
+
+            grid.innerHTML = state.teams.map(t => {
+                const roster = t.players || [];
+                
+                let captainOpts = `<option value="">-- Pilih Kapten Tim --</option>`;
+                roster.forEach(p => {
+                    const sel = (t.captain_id == p.id || t.captain_name == p.name) ? 'selected' : '';
+                    captainOpts += `<option value="${p.id}" ${sel}>${p.name} (${p.tier})</option>`;
+                });
+
+                return `
+                    <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4 relative overflow-hidden">
+                        <div class="absolute top-0 left-0 right-0 h-1.5" style="background-color: ${t.color}"></div>
+                        
+                        <div class="flex items-center justify-between border-b border-gray-800/80 pb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-lg shadow-md" style="background-color: ${t.color}">
+                                    ${t.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <h3 class="font-extrabold text-base text-white">${t.name}</h3>
+                                    <p class="text-xs text-gray-400">Kapten: <span class="text-amber-400 font-bold">${t.captain_name || 'Belum dipilih'}</span></p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-xs font-bold ${roster.length === 6 ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">
+                                ${roster.length} / 6 Orang
+                            </span>
+                        </div>
+
+                        <!-- Select Captain -->
+                        <div class="bg-gray-900/60 p-3 rounded-xl border border-gray-800/80 space-y-1.5">
+                            <label class="text-[11px] font-bold text-gray-300 flex items-center justify-between">
+                                <span><i class="fa-solid fa-crown text-amber-400 mr-1"></i> Pilih Kapten Tim:</span>
+                            </label>
+                            <select onchange="updateTeamCaptain(${t.id}, this.value)" class="w-full bg-gray-950 border border-gray-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                                ${captainOpts}
+                            </select>
+                        </div>
+
+                        <!-- Roster -->
+                        <div class="space-y-2">
+                            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Roster Pemain:</p>
+                            ${roster.length === 0 ? `<p class="text-xs text-gray-600 italic">Belum ada pemain di tim ini.</p>` : `
+                                <div class="grid grid-cols-2 gap-2">
+                                    ${roster.map(p => `
+                                        <div class="bg-gray-900/90 p-2.5 rounded-xl border border-gray-800/80 flex items-center justify-between text-xs ${t.captain_id == p.id || t.captain_name == p.name ? 'border-amber-500/50 bg-amber-950/20' : ''}">
+                                            <div class="truncate mr-2">
+                                                <span class="font-semibold text-gray-200 block truncate">
+                                                    ${t.captain_id == p.id || t.captain_name == p.name ? '<i class="fa-solid fa-crown text-amber-400 text-[10px] mr-1"></i>' : ''}${p.name}
+                                                </span>
+                                                ${p.is_late ? `<span class="text-[10px] text-rose-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>Terlambat (-5)</span>` : ''}
+                                            </div>
+                                            <span class="bg-blue-900/60 text-blue-300 border border-blue-500/30 px-2 py-0.5 rounded text-[11px] font-black">${p.tier} (${p.power_point})</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function updateTeamCaptain(teamId, captainId) {
+            await fetch('/api/teams', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'set_captain', id: teamId, captain_id: captainId })
+            });
+            fetchData();
+        }
+
+        function renderPlayers() {
+            const teamSelect = document.getElementById('player-filter-team');
+            const currentFilter = teamSelect.value;
+            teamSelect.innerHTML = `<option value="">Semua Tim</option>` + state.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+            teamSelect.value = currentFilter;
+
+            const tbody = document.getElementById('players-table-body');
+            let filtered = state.players;
+            if (currentFilter) {
+                filtered = filtered.filter(p => p.team_id == currentFilter);
+            }
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-8 text-center text-gray-500">Tidak ada pemain ditemukan.</td></tr>`;
+                return;
+            }
+
+            const teamMap = {};
+            state.teams.forEach(t => teamMap[t.id] = t);
+
+            tbody.innerHTML = filtered.map((p, idx) => {
+                const team = teamMap[p.team_id];
+                const isCaptain = team && (team.captain_id == p.id || team.captain_name == p.name);
+                return `
+                    <tr class="hover:bg-gray-800/40 transition">
+                        <td class="py-4 px-6 text-gray-500 font-bold">${idx + 1}</td>
+                        <td class="py-4 px-6 font-bold text-white flex items-center space-x-2">
+                            ${isCaptain ? '<i class="fa-solid fa-crown text-amber-400 text-xs"></i>' : ''}
+                            <span>${p.name}</span>
+                        </td>
+                        <td class="py-4 px-6">
+                            ${team ? `<span class="inline-flex items-center space-x-2 text-xs font-semibold"><span class="w-2.5 h-2.5 rounded-full" style="background-color:${team.color}"></span><span>${team.name}</span></span>` : '<span class="text-gray-600">-</span>'}
+                        </td>
+                        <td class="py-4 px-6 text-center">
+                            <span class="px-2.5 py-1 rounded bg-blue-950 text-blue-300 border border-blue-800 text-xs font-bold">${p.tier}</span>
+                        </td>
+                        <td class="py-4 px-6 text-center font-black text-blue-400 text-base">${p.power_point}</td>
+                        <td class="py-4 px-6 text-center">
+                            ${p.is_late ? `
+                                <span class="px-3 py-1 rounded-full bg-rose-950 text-rose-300 border border-rose-800 text-xs font-bold inline-flex items-center space-x-1">
+                                    <i class="fa-solid fa-clock text-[10px]"></i>
+                                    <span>Terlambat (Sanksi 0-5)</span>
+                                </span>
+                            ` : `
+                                <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-bold">Hadir Tepat Waktu</span>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        let currentSchedFilter = 'all';
+        function filterSchedule(type) {
+            currentSchedFilter = type;
+            document.querySelectorAll('.sched-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-800', 'text-gray-300');
+            });
+            document.getElementById(`sched-btn-${type}`).classList.remove('bg-gray-800', 'text-gray-300');
+            document.getElementById(`sched-btn-${type}`).classList.add('bg-blue-600', 'text-white');
+            renderSchedule();
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule-list');
+            let ties = state.ties;
+            if (currentSchedFilter === 'group') ties = ties.filter(t => t.stage === 'Group Stage');
+            if (currentSchedFilter === 'playoff') ties = ties.filter(t => t.stage === 'Playoff');
+
+            const teamMap = {};
+            state.teams.forEach(t => teamMap[t.id] = t);
+
+            if (ties.length === 0) {
+                container.innerHTML = `<div class="glass-panel p-8 rounded-2xl text-center text-gray-500">Tidak ada jadwal dalam kategori ini.</div>`;
+                return;
+            }
+
+            container.innerHTML = ties.map(t => {
+                const t1 = teamMap[t.team1_id];
+                const t2 = teamMap[t.team2_id];
+                const isCompleted = t.status === 'Completed';
+
+                return `
+                    <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4 hover:border-gray-700 transition">
+                        <div class="flex items-center justify-between border-b border-gray-800/80 pb-3">
+                            <div class="flex items-center space-x-2">
+                                <span class="px-2.5 py-0.5 rounded text-[11px] font-bold ${t.stage === 'Playoff' ? 'bg-amber-950 text-amber-400 border border-amber-800' : 'bg-blue-950 text-blue-400 border border-blue-800'}">
+                                    ${t.round_name}
+                                </span>
+                                <span class="text-xs text-gray-500 font-semibold">• 3 Match Ganda</span>
+                            </div>
+                            <span class="text-xs font-bold px-2.5 py-0.5 rounded-full ${isCompleted ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-gray-800 text-gray-400'}">
+                                ${isCompleted ? 'Selesai' : 'Belum Dimainkan'}
+                            </span>
+                        </div>
+
+                        <!-- Duel Teams Display -->
+                        <div class="grid grid-cols-7 items-center text-center py-2">
+                            <!-- Team 1 -->
+                            <div class="col-span-3 flex items-center justify-end space-x-3">
+                                <span class="font-extrabold text-base sm:text-lg text-white ${t.winner_team_id === t.team1_id ? 'text-blue-400' : ''}">${t1 ? t1.name : 'Pilih Tim 1 (Admin)'}</span>
+                                <div class="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-xs" style="background-color: ${t1 ? t1.color : '#4B5563'}">
+                                    ${t1 ? t1.name.charAt(0) : '?'}
+                                </div>
+                            </div>
+
+                            <!-- Score Badge -->
+                            <div class="col-span-1 px-2">
+                                <div class="bg-gray-900 border border-gray-800 py-2 px-3 rounded-xl">
+                                    <span class="text-lg sm:text-xl font-black text-white">${t.score1} - ${t.score2}</span>
+                                </div>
+                            </div>
+
+                            <!-- Team 2 -->
+                            <div class="col-span-3 flex items-center justify-start space-x-3">
+                                <div class="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-xs" style="background-color: ${t2 ? t2.color : '#4B5563'}">
+                                    ${t2 ? t2.name.charAt(0) : '?'}
+                                </div>
+                                <span class="font-extrabold text-base sm:text-lg text-white ${t.winner_team_id === t.team2_id ? 'text-blue-400' : ''}">${t2 ? t2.name : 'Pilih Tim 2 (Admin)'}</span>
+                            </div>
+                        </div>
+
+                        <!-- Button Detail Scoresheet & Edit Teams -->
+                        <div class="flex justify-end pt-2 border-t border-gray-800/80">
+                            <button onclick="openScoreModal(${t.id})" class="text-xs font-bold text-blue-400 hover:text-blue-300 flex items-center space-x-1.5 bg-blue-950/40 border border-blue-500/20 px-3.5 py-1.5 rounded-lg transition">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                                <span>Atur Tim, Pemain & Skor</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderStandings() {
+            const tbody = document.getElementById('standings-table-body');
+            if (!state.standings || state.standings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="10" class="py-8 text-center text-gray-500">Belum ada data klasemen.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = state.standings.map((s, idx) => {
+                const isFinal = idx < 2;
+                return `
+                    <tr class="hover:bg-gray-800/40 transition">
+                        <td class="py-4 px-4 text-center font-black ${idx === 0 ? 'text-amber-400 text-base' : 'text-gray-400'}">${idx + 1}</td>
+                        <td class="py-4 px-6 font-extrabold text-white flex items-center space-x-3">
+                            <div class="w-3.5 h-3.5 rounded-full" style="background-color: ${s.team.color}"></div>
+                            <span>${s.team.name}</span>
+                        </td>
+                        <td class="py-4 px-4 text-center font-bold text-white">${s.played}</td>
+                        <td class="py-4 px-4 text-center font-bold text-emerald-400">${s.wins}</td>
+                        <td class="py-4 px-4 text-center font-bold text-rose-400">${s.losses}</td>
+                        <td class="py-4 px-4 text-center">${s.partai_won} - ${s.partai_lost}</td>
+                        <td class="py-4 px-4 text-center font-bold ${s.partai_diff >= 0 ? 'text-blue-400' : 'text-gray-500'}">${s.partai_diff > 0 ? '+' : ''}${s.partai_diff}</td>
+                        <td class="py-4 px-4 text-center">${s.points_for} / ${s.points_against}</td>
+                        <td class="py-4 px-4 text-center font-bold ${s.points_diff >= 0 ? 'text-blue-400' : 'text-gray-500'}">${s.points_diff > 0 ? '+' : ''}${s.points_diff}</td>
+                        <td class="py-4 px-6 text-center">
+                            ${isFinal ? `
+                                <span class="px-3 py-1 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 text-xs font-extrabold">
+                                    <i class="fa-solid fa-trophy mr-1 text-yellow-400"></i> Final (Juara 1)
+                                </span>
+                            ` : `
+                                <span class="px-3 py-1 rounded-full bg-amber-950 text-amber-300 border border-amber-800 text-xs font-bold">
+                                    Perebutan Juara 3
+                                </span>
+                            `}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderAdmin() {
+            const playerTeamSelect = document.getElementById('player-form-team');
+            playerTeamSelect.innerHTML = `<option value="">-- Pilih Tim Terdaftar --</option>` + state.teams.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+
+            document.getElementById('admin-player-count-badge').innerText = `${state.players.length} / 24 Pemain`;
+
+            const adminTbody = document.getElementById('admin-players-tbody');
+            const teamMap = {};
+            state.teams.forEach(t => teamMap[t.id] = t);
+
+            if (state.players.length === 0) {
+                adminTbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500">Belum ada pemain terdaftar.</td></tr>`;
+                return;
+            }
+
+            adminTbody.innerHTML = state.players.map(p => {
+                const team = teamMap[p.team_id];
+                const isCaptain = team && (team.captain_id == p.id || team.captain_name == p.name);
+                return `
+                    <tr class="hover:bg-gray-800/40">
+                        <td class="py-2.5 px-3 font-bold text-white flex items-center space-x-1.5">
+                            ${isCaptain ? '<i class="fa-solid fa-crown text-amber-400 text-xs"></i>' : ''}
+                            <span>${p.name}</span>
+                        </td>
+                        <td class="py-2.5 px-3">${team ? team.name : '-'}</td>
+                        <td class="py-2.5 px-3 text-center font-bold text-blue-400">${p.tier} (${p.power_point})</td>
+                        <td class="py-2.5 px-3 text-center">
+                            <button onclick="toggleLateStatus(${p.id})" class="px-2 py-0.5 rounded text-[11px] font-bold ${p.is_late ? 'bg-rose-950 text-rose-300 border border-rose-800' : 'bg-gray-800 text-gray-400'}">
+                                ${p.is_late ? 'Terlambat (-5)' : 'Hadir Tepat Waktu'}
+                            </button>
+                        </td>
+                        <td class="py-2.5 px-3 text-right space-x-2">
+                            <button onclick="editPlayer(${p.id})" class="text-blue-400 hover:text-blue-300"><i class="fa-solid fa-pen-to-square"></i></button>
+                            <button onclick="deletePlayer(${p.id})" class="text-rose-400 hover:text-rose-300"><i class="fa-solid fa-trash"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ADMIN FORMS & ACTIONS
+        async function handleTeamSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('team-form-id').value;
+            const name = document.getElementById('team-form-name').value;
+            const color = document.getElementById('team-form-color').value;
+
+            const action = id ? 'update' : 'create';
+            await fetch('/api/teams', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action, id, name, color })
+            });
+
+            resetTeamForm();
+            fetchData();
+        }
+
+        function resetTeamForm() {
+            document.getElementById('team-form-id').value = '';
+            document.getElementById('team-form-name').value = '';
+            document.getElementById('team-form-color').value = '#2563eb';
+        }
+
+        async function handlePlayerSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('player-form-id').value;
+            const name = document.getElementById('player-form-name').value;
+            const team_id = document.getElementById('player-form-team').value;
+            const tier = document.getElementById('player-form-tier').value;
+            const is_late = document.getElementById('player-form-late').checked ? 1 : 0;
+
+            if (!team_id) {
+                alert("Pilih tim terdaftar terlebih dahulu!");
+                return;
+            }
+
+            const action = id ? 'update' : 'create';
+            await fetch('/api/players', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action, id, name, team_id, tier, is_late })
+            });
+
+            resetPlayerForm();
+            fetchData();
+        }
+
+        function resetPlayerForm() {
+            document.getElementById('player-form-id').value = '';
+            document.getElementById('player-form-name').value = '';
+            document.getElementById('player-form-tier').value = 'B';
+            document.getElementById('player-form-late').checked = false;
+        }
+
+        function editPlayer(id) {
+            const p = state.players.find(x => x.id == id);
+            if (!p) return;
+            document.getElementById('player-form-id').value = p.id;
+            document.getElementById('player-form-name').value = p.name;
+            document.getElementById('player-form-team').value = p.team_id;
+            document.getElementById('player-form-tier').value = p.tier;
+            document.getElementById('player-form-late').checked = p.is_late === 1;
+        }
+
+        async function toggleLateStatus(id) {
+            await fetch('/api/players', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'toggle_late', id })
+            });
+            fetchData();
+        }
+
+        async function deletePlayer(id) {
+            if (!confirm("Hapus pemain ini?")) return;
+            await fetch('/api/players', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete', id })
+            });
+            fetchData();
+        }
+
+        async function triggerAutoLineup() {
+            await fetch('/api/lineups/auto', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({})
+            });
+            alert("Lineup ganda dan susunan partai berhasil disusun otomatis berdasarkan Power Point!");
+            fetchData();
+        }
+
+        async function seedSampleData() {
+            if (!confirm("Isi database dengan 4 tim dan 24 contoh pemain untuk demo?")) return;
+            await fetch('/api/seed', { method: 'POST' });
+            fetchData();
+        }
+
+        async function resetData() {
+            if (!confirm("Kosongkan semua tim dan pemain?")) return;
+            await fetch('/api/reset', { method: 'POST' });
+            fetchData();
+        }
+
+        // SCORESHEET & MATCH EDITOR MODAL LOGIC
+        function openScoreModal(tieId) {
+            currentActiveTieId = tieId;
+            const tie = state.ties.find(t => t.id == tieId);
+            if (!tie) return;
+
+            document.getElementById('modal-score-title').innerText = `${tie.round_name} • Match Editor`;
+            document.getElementById('modal-score-sub').innerText = `Tentukan Tim Bertanding, Pilih Pasangan Pemain, & Input Skor`;
+
+            // Populate Team Selectors for Tie
+            const t1Select = document.getElementById('modal-tie-team1');
+            const t2Select = document.getElementById('modal-tie-team2');
+
+            let teamOpts1 = `<option value="">-- Pilih Tim 1 --</option>`;
+            let teamOpts2 = `<option value="">-- Pilih Tim 2 --</option>`;
+
+            state.teams.forEach(t => {
+                const sel1 = t.id == tie.team1_id ? 'selected' : '';
+                const sel2 = t.id == tie.team2_id ? 'selected' : '';
+                teamOpts1 += `<option value="${t.id}" ${sel1}>${t.name}</option>`;
+                teamOpts2 += `<option value="${t.id}" ${sel2}>${t.name}</option>`;
+            });
+
+            t1Select.innerHTML = teamOpts1;
+            t2Select.innerHTML = teamOpts2;
+
+            renderModalMatches(tie);
+            document.getElementById('modal-score').classList.remove('hidden');
+        }
+
+        async function onModalTeamChange() {
+            if (!currentActiveTieId) return;
+            const t1_id = document.getElementById('modal-tie-team1').value;
+            const t2_id = document.getElementById('modal-tie-team2').value;
+
+            await fetch('/api/ties/update', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tie_id: currentActiveTieId, team1_id: t1_id, team2_id: t2_id })
+            });
+
+            await fetchData();
+            const tie = state.ties.find(t => t.id == currentActiveTieId);
+            if (tie) renderModalMatches(tie);
+        }
+
+        function renderModalMatches(tie) {
+            const teamMap = {};
+            state.teams.forEach(t => teamMap[t.id] = t);
+            const t1 = teamMap[tie.team1_id];
+            const t2 = teamMap[tie.team2_id];
+
+            const t1_players = state.players.filter(p => p.team_id == tie.team1_id);
+            const t2_players = state.players.filter(p => p.team_id == tie.team2_id);
+
+            const body = document.getElementById('modal-score-body');
+            body.innerHTML = (tie.matches || []).map(m => {
+                const buildOptions = (players, selectedId) => {
+                    let opts = `<option value="">-- Pilih Pemain --</option>`;
+                    players.forEach(p => {
+                        const sel = p.id == selectedId ? 'selected' : '';
+                        const lateTag = p.is_late ? ' ⚠️ Late' : '';
+                        opts += `<option value="${p.id}" ${sel}>${p.name} (${p.tier} - ${p.power_point}pt${lateTag})</option>`;
+                    });
+                    return opts;
+                };
+
+                return `
+                    <div class="bg-gray-900/90 p-5 rounded-2xl border border-gray-800 space-y-4 text-xs">
+                        <div class="flex items-center justify-between font-bold border-b border-gray-800 pb-2.5">
+                            <span class="text-blue-400 text-sm">Partai Ke-${m.partai_num}</span>
+                            <span class="text-gray-300">Total Power Point: <strong class="text-amber-400">${m.pair1_points} Pts</strong> vs <strong class="text-amber-400">${m.pair2_points} Pts</strong></span>
+                        </div>
+
+                        <!-- Player Selectors -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-950/60 p-3.5 rounded-xl border border-gray-800/80">
+                            <!-- Team 1 Players Selection -->
+                            <div class="space-y-2">
+                                <label class="font-extrabold text-blue-400 block">${t1 ? t1.name : 'Tim 1'} (Ganda):</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <span class="text-[10px] text-gray-400 font-semibold block mb-0.5">Pemain 1</span>
+                                        <select id="select-t1-p1-${m.id}" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                                            ${buildOptions(t1_players, m.t1_p1_id)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-gray-400 font-semibold block mb-0.5">Pemain 2</span>
+                                        <select id="select-t1-p2-${m.id}" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                                            ${buildOptions(t1_players, m.t1_p2_id)}
+                                        </select>
+                                    </div>
+                                </div>
+                                ${m.t1_penalty > 0 ? `<p class="text-[10px] text-rose-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>Penalty Terlambat Diset: Start Skor 0 - 5</p>` : ''}
+                            </div>
+
+                            <!-- Team 2 Players Selection -->
+                            <div class="space-y-2">
+                                <label class="font-extrabold text-blue-400 block">${t2 ? t2.name : 'Tim 2'} (Ganda):</label>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <span class="text-[10px] text-gray-400 font-semibold block mb-0.5">Pemain 1</span>
+                                        <select id="select-t2-p1-${m.id}" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                                            ${buildOptions(t2_players, m.t2_p1_id)}
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <span class="text-[10px] text-gray-400 font-semibold block mb-0.5">Pemain 2</span>
+                                        <select id="select-t2-p2-${m.id}" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                                            ${buildOptions(t2_players, m.t2_p2_id)}
+                                        </select>
+                                    </div>
+                                </div>
+                                ${m.t2_penalty > 0 ? `<p class="text-[10px] text-rose-400 font-bold"><i class="fa-solid fa-clock mr-1"></i>Penalty Terlambat Diset: Start Skor 0 - 5</p>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- Score Input & Save Form -->
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-gray-400 text-xs">Skor Partido:</span>
+                                <input type="number" id="score-input-t1-${m.id}" value="${m.t1_score}" min="0" max="30" class="w-14 bg-gray-950 border border-gray-700 rounded-lg px-2 py-1 text-center font-black text-sm text-white">
+                                <span class="font-black text-gray-500">-</span>
+                                <input type="number" id="score-input-t2-${m.id}" value="${m.t2_score}" min="0" max="30" class="w-14 bg-gray-950 border border-gray-700 rounded-lg px-2 py-1 text-center font-black text-sm text-white">
+                            </div>
+                            <button onclick="saveMatchScore(${m.id})" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-4 py-2 rounded-xl transition text-xs flex items-center space-x-1.5">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Simpan Partai ${m.partai_num}</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function closeScoreModal() {
+            document.getElementById('modal-score').classList.add('hidden');
+            currentActiveTieId = null;
+        }
+
+        async function saveMatchScore(matchId) {
+            const t1_id = document.getElementById('modal-tie-team1').value;
+            const t2_id = document.getElementById('modal-tie-team2').value;
+
+            const t1_p1_id = document.getElementById(`select-t1-p1-${matchId}`).value;
+            const t1_p2_id = document.getElementById(`select-t1-p2-${matchId}`).value;
+            const t2_p1_id = document.getElementById(`select-t2-p1-${matchId}`).value;
+            const t2_p2_id = document.getElementById(`select-t2-p2-${matchId}`).value;
+
+            const t1_score = document.getElementById(`score-input-t1-${matchId}`).value;
+            const t2_score = document.getElementById(`score-input-t2-${matchId}`).value;
+
+            await fetch('/api/matches/score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    match_id: matchId,
+                    tie_id: currentActiveTieId,
+                    team1_id: t1_id,
+                    team2_id: t2_id,
+                    t1_p1_id, t1_p2_id,
+                    t2_p1_id, t2_p2_id,
+                    t1_score, t2_score
+                })
+            });
+
+            await fetchData();
+            const tie = state.ties.find(t => t.id == currentActiveTieId);
+            if (tie) renderModalMatches(tie);
+        }
+    </script>
+</body>
+</html>
