@@ -7,7 +7,7 @@ import sys
 import urllib.parse
 from pathlib import Path
 
-PORT = 8000
+PORT = int(os.environ.get("PORT", 8000))
 DB_FILE = os.path.join(os.path.dirname(__file__), "pbsc.db")
 STATIC_DIR = os.path.dirname(__file__)
 
