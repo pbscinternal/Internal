@@ -44,7 +44,7 @@
     <header class="sticky top-0 z-50 glass-panel border-b border-gray-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <div class="flex items-center space-x-4 cursor-pointer" onclick="switchTab('home')">
-                <img src="/pbsc_logo.jpg" alt="PBSC Logo" class="h-12 w-12 rounded-full border-2 border-blue-500 shadow-md object-cover">
+                <img src="pbsc_logo.jpg" alt="PBSC Logo" class="h-12 w-12 rounded-full border-2 border-blue-500 shadow-md object-cover">
                 <div>
                     <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-blue-200 to-blue-500 bg-clip-text text-transparent">PBSC</h1>
                     <p class="text-xs text-blue-400 font-semibold tracking-widest uppercase">Internal Tournament</p>
@@ -134,7 +134,7 @@
                     </div>
                     <div>
                         <p class="text-xs font-medium text-gray-400">Total Tim</p>
-                        <p id="stat-teams" class="text-2xl font-black text-white">4</p>
+                        <p id="stat-teams" class="text-2xl font-black text-white">0</p>
                     </div>
                 </div>
 
@@ -154,7 +154,7 @@
                     </div>
                     <div>
                         <p class="text-xs font-medium text-gray-400">Total Match Tie</p>
-                        <p id="stat-matches" class="text-2xl font-black text-white">8 Tie</p>
+                        <p id="stat-matches" class="text-2xl font-black text-white">0 / 8 Tie</p>
                     </div>
                 </div>
 
@@ -188,7 +188,7 @@
                     </div>
                 </div>
 
-                <!-- Quick Rules & Quick Seed Info -->
+                <!-- Quick Rules -->
                 <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-6 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center space-x-3 mb-4 pb-4 border-b border-gray-800">
@@ -198,250 +198,179 @@
                         <ul class="space-y-3 text-xs text-gray-300">
                             <li class="flex items-start space-x-2">
                                 <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
-                                <span><strong>4 Tim, 24 Pemain</strong> (6 orang per tim: 1 A1, 1 A2, 2 B, 1 C1, 1 C2).</span>
+                                <span>24 Pemain terbagi dalam 4 Tim (6 orang/tim: 1 A1, 1 A2, 2 B, 1 C1, 1 C2).</span>
                             </li>
                             <li class="flex items-start space-x-2">
                                 <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
-                                <span><strong>Kontrol Match Admin</strong>: Admin menentukan tim yang bertanding di setiap match, menyusun ganda, dan menginput skor.</span>
+                                <span>Partai ganda disusun otomatis sesuai Power Point Tier (A1+C1, A2+B, B+C2).</span>
                             </li>
                             <li class="flex items-start space-x-2">
-                                <i class="fa-solid fa-check text-blue-400 mt-0.5"></i>
-                                <span><strong>Pengurutan Partai</strong>: Pengurutan berdasarkan akumulasi poin. Jika total poin sama (misal 5+2=7 vs 3+4=7), pasangan dengan pemain ber-poin tertinggi (5+2) bertanding lebih dulu di Partai 1.</span>
-                            </li>
-                            <li class="flex items-start space-x-2">
-                                <i class="fa-solid fa-check text-rose-400 mt-0.5"></i>
-                                <span><strong>Penalty Terlambat</strong>: Sanksi skor awal 0 - 5 (lawan unggul 5-0) khusus match dimana pemain terlambat tampil.</span>
+                                <i class="fa-solid fa-clock text-rose-400 mt-0.5"></i>
+                                <span>Penalty keterlambatan: Memulai laga dengan skor 0 - 5.</span>
                             </li>
                         </ul>
                     </div>
-
-                    <div class="pt-4 border-t border-gray-800">
-                        <button onclick="switchTab('admin')" class="w-full py-3 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 rounded-xl text-xs font-bold transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-sliders"></i>
-                            <span>Buka Admin Panel</span>
-                        </button>
-                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 2: TIM (TEAMS) -->
+        <!-- TAB 2: DAFTAR TIM -->
         <section id="tab-teams" class="tab-content hidden space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
+            <div class="flex items-center justify-between border-b border-gray-800 pb-4">
                 <div>
-                    <h2 class="text-2xl font-black text-white">Daftar Tim PBSC</h2>
-                    <p class="text-xs text-gray-400">Total 4 Tim peserta turnamen bulutangkis PBSC</p>
+                    <h2 class="text-2xl font-black text-white">DAFTAR TIM PARTICIPANT</h2>
+                    <p class="text-xs text-gray-400">Komposisi 4 Tim, Kapten, dan Roster Pemain per Tier</p>
                 </div>
-                <button onclick="switchTab('admin')" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition">
-                    <i class="fa-solid fa-plus mr-1"></i> Kelola Tim & Pemain (Admin)
-                </button>
             </div>
 
             <div id="teams-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Team cards populated by JS -->
+                <!-- Teams rendered by JS -->
             </div>
         </section>
 
-        <!-- TAB 3: PEMAIN (PLAYERS) -->
+        <!-- TAB 3: DAFTAR PEMAIN -->
         <section id="tab-players" class="tab-content hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
                 <div>
-                    <h2 class="text-2xl font-black text-white">Daftar Pemain</h2>
-                    <p class="text-xs text-gray-400">Klasifikasi Tier & Power Point Pemain (A1=5, A2=4, B=3, C1=2, C2=1)</p>
+                    <h2 class="text-2xl font-black text-white">DAFTAR PEMAIN (24 PARTICIPANTS)</h2>
+                    <p class="text-xs text-gray-400">Daftar lengkap 24 pemain, Tier Power Point, dan status kehadiran</p>
                 </div>
                 <div class="flex items-center space-x-3">
-                    <select id="player-filter-team" onchange="renderPlayers()" class="bg-gray-900 border border-gray-700 text-xs rounded-xl px-3 py-2 text-gray-200">
+                    <label class="text-xs font-semibold text-gray-400">Filter Tim:</label>
+                    <select id="player-filter-team" onchange="renderPlayers()" class="bg-gray-900 border border-gray-700 rounded-xl px-3 py-1.5 text-xs text-white">
                         <option value="">Semua Tim</option>
                     </select>
-                    <button onclick="switchTab('admin')" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold shadow transition">
-                        <i class="fa-solid fa-user-plus mr-1"></i> Tambah Pemain
-                    </button>
                 </div>
             </div>
 
             <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-gray-900 text-xs uppercase text-gray-400 border-b border-gray-800">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-gray-900/90 uppercase text-gray-400 font-bold border-b border-gray-800">
                             <tr>
-                                <th class="py-4 px-6">#</th>
-                                <th class="py-4 px-6">Nama Pemain</th>
-                                <th class="py-4 px-6">Tim</th>
-                                <th class="py-4 px-6 text-center">Tier</th>
-                                <th class="py-4 px-6 text-center">Power Point</th>
-                                <th class="py-4 px-6 text-center">Status Kehadiran</th>
+                                <th class="py-3.5 px-6">#</th>
+                                <th class="py-3.5 px-6">Nama Pemain</th>
+                                <th class="py-3.5 px-6">Tim</th>
+                                <th class="py-3.5 px-6 text-center">Tier</th>
+                                <th class="py-3.5 px-6 text-center">Power Point</th>
+                                <th class="py-3.5 px-6 text-center">Status Kehadiran</th>
                             </tr>
                         </thead>
-                        <tbody id="players-table-body" class="divide-y divide-gray-800/60">
-                            <!-- Populated by JS -->
+                        <tbody id="players-table-body" class="divide-y divide-gray-800">
+                            <!-- Players rendered by JS -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 4: JADWAL & HASIL (SCHEDULE) -->
+        <!-- TAB 4: JADWAL & HASIL -->
         <section id="tab-schedule" class="tab-content hidden space-y-6">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-800 pb-4">
                 <div>
-                    <h2 class="text-2xl font-black text-white">Jadwal & Hasil Pertandingan</h2>
-                    <p class="text-xs text-gray-400">Admin menentukan tim bertanding, susunan pasangan, & menginput skor</p>
+                    <h2 class="text-2xl font-black text-white">JADWAL & HASIL MATCH</h2>
+                    <p class="text-xs text-gray-400">Group Stage (6 Tie) & Playoff (Final Juara 1 & Juara 3)</p>
                 </div>
-                <div class="flex space-x-2">
-                    <button onclick="filterSchedule('all')" id="sched-btn-all" class="sched-filter-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white">Semua Stage</button>
-                    <button onclick="filterSchedule('group')" id="sched-btn-group" class="sched-filter-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">Group Stage</button>
-                    <button onclick="filterSchedule('playoff')" id="sched-btn-playoff" class="sched-filter-btn px-4 py-1.5 rounded-lg text-xs font-semibold bg-gray-800 text-gray-300 hover:bg-gray-700">Playoff Final</button>
+                <div class="flex items-center space-x-2 bg-gray-900 p-1 rounded-xl border border-gray-800">
+                    <button onclick="filterSchedule('all')" id="sched-btn-all" class="sched-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white transition">Semua</button>
+                    <button onclick="filterSchedule('group')" id="sched-btn-group" class="sched-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 transition">Group Stage</button>
+                    <button onclick="filterSchedule('playoff')" id="sched-btn-playoff" class="sched-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold text-gray-400 transition">Playoff</button>
                 </div>
             </div>
 
-            <div id="schedule-list" class="space-y-6">
-                <!-- Matches populated by JS -->
+            <div id="schedule-list" class="space-y-4">
+                <!-- Schedule items rendered by JS -->
             </div>
         </section>
 
-        <!-- TAB 5: KLASEMEN (STANDINGS) -->
+        <!-- TAB 5: KLASEMEN -->
         <section id="tab-standings" class="tab-content hidden space-y-6">
             <div class="border-b border-gray-800 pb-4">
-                <h2 class="text-2xl font-black text-white">Papan Klasemen Utama</h2>
-                <p class="text-xs text-gray-400">Perhitungan Realtime: Menang Tie -> Selisih Partai Ganda -> Selisih Poin</p>
+                <h2 class="text-2xl font-black text-white">PAPAN KLASEMEN GROUP STAGE</h2>
+                <p class="text-xs text-gray-400">Peringkat 1 & 2 melaju ke Final Juara 1 • Peringkat 3 & 4 berlaga di Perebutan Juara 3</p>
             </div>
 
-            <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden shadow-xl">
+            <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-gray-300">
-                        <thead class="bg-gray-900 text-xs uppercase text-gray-400 border-b border-gray-800">
+                    <table class="w-full text-left text-xs text-gray-300">
+                        <thead class="bg-gray-900/90 uppercase text-gray-400 font-bold border-b border-gray-800">
                             <tr>
                                 <th class="py-4 px-4 text-center">Pos</th>
-                                <th class="py-4 px-6">Tim</th>
+                                <th class="py-4 px-6">Nama Tim</th>
                                 <th class="py-4 px-4 text-center">Main</th>
                                 <th class="py-4 px-4 text-center">Menang</th>
                                 <th class="py-4 px-4 text-center">Kalah</th>
-                                <th class="py-4 px-4 text-center">Partai (M-K)</th>
+                                <th class="py-4 px-4 text-center">Partai (W-L)</th>
                                 <th class="py-4 px-4 text-center">Diff Partai</th>
-                                <th class="py-4 px-4 text-center">Poin (+/-)</th>
+                                <th class="py-4 px-4 text-center">Poin Game</th>
                                 <th class="py-4 px-4 text-center">Diff Poin</th>
-                                <th class="py-4 px-6 text-center">Status Playoff</th>
+                                <th class="py-4 px-6 text-center">Kualifikasi Playoff</th>
                             </tr>
                         </thead>
-                        <tbody id="standings-table-body" class="divide-y divide-gray-800/60 font-medium">
-                            <!-- Populated by JS -->
+                        <tbody id="standings-table-body" class="divide-y divide-gray-800">
+                            <!-- Standings rendered by JS -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 6: ATURAN (RULES) -->
-        <section id="tab-rules" class="tab-content hidden space-y-8">
+        <!-- TAB 6: ATURAN & REGULASI -->
+        <section id="tab-rules" class="tab-content hidden space-y-6">
             <div class="border-b border-gray-800 pb-4">
-                <h2 class="text-2xl font-black text-white">Aturan Turnamen PBSC</h2>
-                <p class="text-xs text-gray-400">Ketentuan resmi komposisi tim, tier power point, susunan partai, dan penalty keterlambatan</p>
+                <h2 class="text-2xl font-black text-white">ATURAN & KETENTUAN TURNAMEN</h2>
+                <p class="text-xs text-gray-400">PBSC Internal Tournament 2026 - 4th Anniversary</p>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Card 1: Komposisi Tim & Player Tier -->
-                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
-                    <div class="flex items-center space-x-3 text-blue-400">
-                        <i class="fa-solid fa-users-gear text-2xl"></i>
-                        <h3 class="text-lg font-bold text-white">1. Flow Tim & Komposisi Tier</h3>
-                    </div>
-                    <ul class="space-y-2 text-xs text-gray-300 leading-relaxed">
-                        <li>• <strong>Flow Pembuatan Tim</strong>: Nama tim dibuat tanpa menentukan kapten terlebih dahulu. Kapten tim dipilih setelah roster pemain terdaftar.</li>
-                        <li>• Total <strong>24 pemain</strong> dibagi ke dalam <strong>4 tim</strong> (6 pemain/tim: 1 A1, 1 A2, 2 B, 1 C1, 1 C2).</li>
-                        <li>• Skala Power Point Tier:
-                            <div class="mt-2 grid grid-cols-5 gap-2 text-center font-bold">
-                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">A1</span>: 5</div>
-                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">A2</span>: 4</div>
-                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">B</span>: 3</div>
-                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">C1</span>: 2</div>
-                                <div class="bg-gray-900 py-1.5 rounded border border-gray-800"><span class="text-blue-400">C2</span>: 1</div>
-                            </div>
-                        </li>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-gray-300">
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-3">
+                    <h3 class="text-sm font-bold text-white flex items-center space-x-2 border-b border-gray-800 pb-2">
+                        <i class="fa-solid fa-users text-blue-400"></i>
+                        <span>Komposisi Tim & Tier Power Point</span>
+                    </h3>
+                    <p class="leading-relaxed">Total 24 pemain dibagi rata ke dalam 4 tim (masing-masing 6 pemain).</p>
+                    <ul class="space-y-1.5 bg-gray-900/60 p-3 rounded-xl border border-gray-800">
+                        <li class="flex justify-between"><span>Tier A1</span><strong class="text-amber-400">5 Poin</strong></li>
+                        <li class="flex justify-between"><span>Tier A2</span><strong class="text-amber-400">4 Poin</strong></li>
+                        <li class="flex justify-between"><span>Tier B (2 Orang)</span><strong class="text-amber-400">3 Poin</strong></li>
+                        <li class="flex justify-between"><span>Tier C1</span><strong class="text-amber-400">2 Poin</strong></li>
+                        <li class="flex justify-between"><span>Tier C2</span><strong class="text-amber-400">1 Poin</strong></li>
                     </ul>
                 </div>
 
-                <!-- Card 2: Aturan Susunan Partai -->
-                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
-                    <div class="flex items-center space-x-3 text-amber-400">
-                        <i class="fa-solid fa-list-ol text-2xl"></i>
-                        <h3 class="text-lg font-bold text-white">2. Komposisi Susunan Partai</h3>
-                    </div>
-                    <p class="text-xs text-gray-300 leading-relaxed">
-                        Setiap duel tim terdiri dari <strong>3 partai ganda</strong>. Pengurutan partai diatur berdasarkan akumulasi power point pasangan.
-                    </p>
-                    <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 text-xs text-gray-300 space-y-1.5">
-                        <p class="font-bold text-amber-400"><i class="fa-solid fa-lightbulb mr-1"></i> Ketentuan Poin Sama:</p>
-                        <p>Jika terdapat 2 partai dalam 1 tim dengan total power poin sama (contoh <code>5+2 = 7</code> dan <code>3+4 = 7</code>), maka yang bertanding di susunan partai pertama (Partai Ke-1) adalah partai dengan member yang memiliki point tertinggi, yaitu <code>5+2</code>.</p>
-                    </div>
-                </div>
-
-                <!-- Card 3: Urutan Match Schedule -->
-                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
-                    <div class="flex items-center space-x-3 text-emerald-400">
-                        <i class="fa-solid fa-sitemap text-2xl"></i>
-                        <h3 class="text-lg font-bold text-white">3. Penentuan Tim & Match Schedule</h3>
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 text-xs">
-                        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 space-y-1">
-                            <p class="font-bold text-emerald-400">Group Stage (Round Robin):</p>
-                            <p>Admin memilih Tim 1 vs Tim 2 untuk setiap Match (Match 1 s.d 6).</p>
-                        </div>
-                        <div class="bg-gray-900 p-3 rounded-xl border border-gray-800 space-y-1">
-                            <p class="font-bold text-emerald-400">Final Stage (Playoff):</p>
-                            <p>• <strong>Final Juara 1</strong>: 2 Tim teratas.</p>
-                            <p>• <strong>Perebutan Juara 3</strong>: 2 Tim terbawah.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Card 4: Penalty Keterlambatan -->
-                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-4">
-                    <div class="flex items-center space-x-3 text-rose-400">
-                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
-                        <h3 class="text-lg font-bold text-white">4. Penalty Keterlambatan</h3>
-                    </div>
-                    <div class="bg-rose-950/40 p-4 rounded-xl border border-rose-800/40 text-xs text-rose-200 space-y-2">
-                        <p class="font-bold">Ketentuan Penalty Poin (5 Poin):</p>
-                        <p>Untuk pemain yang tidak hadir tepat waktu, akan dikenakan <strong>penalty 5 poin</strong> untuk setiap match group stage / playoff yang mana pemain tersebut bertanding.</p>
-                        <p class="text-gray-300 italic">Contoh: Jika "Budi" di Tim 1 terlambat hadir, maka setiap match dimana Budi bertanding, game akan dimulai dengan skor <strong>0 - 5</strong> untuk keunggulan lawan. Sedangkan match pemain lain yang tidak terlambat tidak terkena penalty poin (dimulai dari 0-0).</p>
+                <div class="glass-panel p-6 rounded-2xl border border-gray-800 space-y-3">
+                    <h3 class="text-sm font-bold text-white flex items-center space-x-2 border-b border-gray-800 pb-2">
+                        <i class="fa-solid fa-clock text-rose-400"></i>
+                        <span>Sanksi Keterlambatan Pemain</span>
+                    </h3>
+                    <p class="leading-relaxed">Pemain yang terlambat hadir pada jam dimulainya turnamen dikenakan sanksi pengurangan poin.</p>
+                    <div class="bg-rose-950/40 border border-rose-800 p-3 rounded-xl space-y-1">
+                        <p class="font-extrabold text-rose-300">Sanksi: Start Skor 0 - 5</p>
+                        <p class="text-[11px] text-rose-200 leading-relaxed">Pasangan yang salah satu/kedua anggotanya terlambat akan mengawali setiap pertandingan partai ganda dengan skor awal tertinggal 0 - 5.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- TAB 7: ADMIN PANEL -->
-        <section id="tab-admin" class="tab-content hidden space-y-8">
+        <!-- TAB 7: PANEL ADMIN -->
+        <section id="tab-admin" class="tab-content hidden space-y-6">
             <div class="flex items-center justify-between border-b border-gray-800 pb-4">
                 <div>
-                    <h2 class="text-2xl font-black text-white flex items-center space-x-3">
-                        <i class="fa-solid fa-user-shield text-blue-500"></i>
-                        <span>Panel Administrasi Turnamen</span>
-                    </h2>
-                    <p class="text-xs text-gray-400">Tahap 1: Buat Nama Tim -> Tahap 2: Tambah Pemain -> Tahap 3: Pilih Kapten Tim</p>
-                </div>
-
-                <div class="flex items-center space-x-3">
-                    <button onclick="seedSampleData()" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 border border-emerald-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition">
-                        <i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Seed Data Contoh
-                    </button>
-                    <button onclick="resetData()" class="bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 border border-rose-500/30 px-3.5 py-2 rounded-xl text-xs font-bold transition">
-                        <i class="fa-solid fa-trash-arrow-up mr-1"></i> Kosongkan Data
-                    </button>
+                    <h2 class="text-2xl font-black text-white">PANEL ADMIN MANAGEMENT</h2>
+                    <p class="text-xs text-gray-400">Kelola Tim, Pemain, Kapten, Generator Lineup, dan Simpan Data Online</p>
                 </div>
             </div>
 
-            <!-- ADMIN TABS / SECTIONS -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-
-                <!-- KELOLA TIM & PEMAIN FORM -->
+                <!-- FORMS INPUT: TIM & PEMAIN -->
                 <div class="space-y-6">
-                    <!-- Form Tim (Langkah 1: Buat Tim Tanpa Kapten) -->
+                    <!-- Form Tim (Langkah 1: Buat Tim tanpa Kapten) -->
                     <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
                         <div>
                             <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950 border border-blue-800 px-2 py-0.5 rounded">Langkah 1</span>
                             <h3 class="text-sm font-bold text-white flex items-center space-x-2 mt-1">
                                 <i class="fa-solid fa-shield-cat text-blue-400"></i>
-                                <span>Buat / Ubah Nama Tim</span>
+                                <span>Buat / Edit Tim</span>
                             </h3>
                         </div>
                         <form id="form-team" onsubmit="handleTeamSubmit(event)" class="space-y-3 text-xs">
@@ -506,7 +435,7 @@
                     </div>
                 </div>
 
-                <!-- ADMIN DATA MANAGEMENT LISTS & STEP 3: KAPTEN TIM -->
+                <!-- ADMIN DATA MANAGEMENT LISTS & SIMPAN PERMANEN -->
                 <div class="lg:col-span-2 space-y-6">
 
                     <!-- AUTO LINEUP GENERATOR TRIGGER -->
@@ -530,7 +459,7 @@
                             <span>Daftar Pemain & Penalty Manager</span>
                             <span id="admin-player-count-badge" class="text-xs bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-0.5 rounded-full">0 / 24 Pemain</span>
                         </h4>
-                        <div class="overflow-x-auto max-h-[400px]">
+                        <div class="overflow-x-auto max-h-[350px]">
                             <table class="w-full text-left text-xs text-gray-300">
                                 <thead class="bg-gray-900 sticky top-0 uppercase text-gray-400">
                                     <tr>
@@ -548,6 +477,86 @@
                         </div>
                     </div>
 
+                    <!-- DATA MANAGEMENT & GITHUB PAGES PERSISTENCE BOX -->
+                    <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+                            <h4 class="text-sm font-bold text-white flex items-center space-x-2">
+                                <i class="fa-solid fa-cloud-arrow-up text-blue-400"></i>
+                                <span>Simpan & Sinkronisasi Data Online</span>
+                            </h4>
+                            <span id="backend-status-badge" class="text-[11px] bg-blue-950 text-blue-300 border border-blue-800 px-2.5 py-0.5 rounded-full font-bold">Static / Local Mode</span>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <!-- Export Button -->
+                            <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-800 space-y-2">
+                                <h5 class="text-xs font-bold text-white flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-download text-emerald-400"></i>
+                                    <span>1. Export / Download data.json</span>
+                                </h5>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">Unduh file data turnamen terbaru untuk disimpan atau di-upload ke repository GitHub.</p>
+                                <button onclick="exportDataJSON()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-file-export"></i>
+                                    <span>Download data.json Terbaru</span>
+                                </button>
+                            </div>
+
+                            <!-- Import Button -->
+                            <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-800 space-y-2">
+                                <h5 class="text-xs font-bold text-white flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-upload text-blue-400"></i>
+                                    <span>2. Import data.json</span>
+                                </h5>
+                                <p class="text-[11px] text-gray-400 leading-relaxed">Muat data dari file data.json lokal ke website ini.</p>
+                                <input type="file" id="import-json-file" accept=".json" onchange="importDataJSON(event)" class="hidden">
+                                <button onclick="document.getElementById('import-json-file').click()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-file-import"></i>
+                                    <span>Pilih & Upload data.json</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- RENDER BACKEND CONFIG BOX -->
+                        <div class="bg-purple-950/30 border border-purple-800/60 p-4 rounded-xl space-y-2">
+                            <h5 class="text-xs font-extrabold text-purple-300 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-server text-purple-400"></i>
+                                <span>3. Hubungkan Backend Render (Realtime Cloud Database)</span>
+                            </h5>
+                            <p class="text-[11px] text-gray-300 leading-relaxed">
+                                Masukkan URL Render Web Service Anda (contoh: <code class="bg-gray-900 px-1 py-0.5 rounded text-amber-300">https://pbsc-backend.onrender.com</code>) agar data tersimpan otomatis di cloud secara realtime:
+                            </p>
+                            <div class="flex space-x-2 pt-1">
+                                <input type="url" id="render-url-input" placeholder="https://pbsc-backend.onrender.com" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-white">
+                                <button onclick="saveRenderUrl()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs transition whitespace-nowrap">
+                                    Simpan Backend
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Instructions Banner -->
+                        <div class="bg-blue-950/40 border border-blue-500/30 p-4 rounded-xl text-xs space-y-2">
+                            <h5 class="font-extrabold text-blue-300 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-circle-info"></i>
+                                <span>Cara Simpan Data Permanen (Pilih Salah Satu):</span>
+                            </h5>
+                            <ul class="list-disc list-inside text-gray-300 space-y-1 text-[11px] leading-relaxed">
+                                <li><strong>Opsi A (Render Cloud):</strong> Hubungkan Backend Render di atas ➔ Data otomatis ter-update realtime bagi semua pengunjung!</li>
+                                <li><strong>Opsi B (Manual GitHub Commit):</strong> Klik <strong class="text-emerald-400">"Download data.json Terbaru"</strong> ➔ Upload & replace file <code class="bg-gray-900 px-1 py-0.5 rounded text-amber-300">data.json</code> di repo <a href="https://github.com/pbscinternal/Internal" target="_blank" class="text-blue-400 underline">github.com/pbscinternal/Internal</a>.</li>
+                            </ul>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-2 border-t border-gray-800">
+                            <button onclick="seedSampleData()" class="text-xs text-amber-400 hover:text-amber-300 font-bold flex items-center space-x-1">
+                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                <span>Isi Data Sample (Demo 24 Pemain)</span>
+                            </button>
+                            <button onclick="resetData()" class="text-xs text-rose-400 hover:text-rose-300 font-bold flex items-center space-x-1">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Kosongkan Semua Data</span>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -560,7 +569,7 @@
             <div class="flex items-center justify-between border-b border-gray-800 pb-4">
                 <div>
                     <h3 id="modal-score-title" class="text-lg font-bold text-white">Scoresheet & Match Editor</h3>
-                    <p id="modal-score-sub" class="text-xs text-gray-400">Pilih Tim Bertanding, Pasangan Pemain, & Input Skor</p>
+                    <p id="modal-score-sub" class="text-xs text-gray-400">Pilih Tim Bertanding, Pilih Pasangan Pemain, & Input Skor</p>
                 </div>
                 <button onclick="closeScoreModal()" class="text-gray-400 hover:text-white text-xl">
                     <i class="fa-solid fa-xmark"></i>
@@ -603,7 +612,7 @@
     <footer class="border-t border-gray-800 py-6 mt-12 bg-gray-950/80 text-center text-xs text-gray-500">
         <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-                <img src="/pbsc_logo.jpg" alt="PBSC" class="h-6 w-6 rounded-full">
+                <img src="pbsc_logo.jpg" alt="PBSC" class="h-6 w-6 rounded-full">
                 <span class="font-bold text-gray-400">PBSC Internal Tournament 2026 - 4th Anniversary</span>
             </div>
             <p>Sistem Kompetisi Bulutangkis 24 Pemain 4 Tim - Aturan Power Point & Penalty Keterlambatan</p>
@@ -612,6 +621,9 @@
 
     <!-- JAVASCRIPT APPLICATION CODE -->
     <script>
+        const STORAGE_KEY = 'pbsc_tournament_state';
+        let renderBackendUrl = localStorage.getItem('render_backend_url') || '';
+
         let state = {
             settings: {},
             teams: [],
@@ -621,21 +633,176 @@
         };
 
         let currentActiveTieId = null;
-
+        let isApiMode = false;
         const tierPoints = { 'A1': 5, 'A2': 4, 'B': 3, 'C1': 2, 'C2': 1 };
 
         document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('render-url-input');
+            if (input && renderBackendUrl) input.value = renderBackendUrl;
             fetchData();
         });
 
+        function getApiUrl(endpoint) {
+            if (renderBackendUrl) {
+                return renderBackendUrl.replace(/\/$/, '') + endpoint;
+            }
+            return endpoint;
+        }
+
+        function saveRenderUrl() {
+            const input = document.getElementById('render-url-input');
+            const val = input ? input.value.trim() : '';
+            if (val) {
+                renderBackendUrl = val;
+                localStorage.setItem('render_backend_url', val);
+                alert("URL Render Backend tersimpan! Website akan memuat data dari: " + val);
+            } else {
+                renderBackendUrl = '';
+                localStorage.removeItem('render_backend_url');
+                alert("URL Render dihapus. Mode kembali ke lokal/statis.");
+            }
+            fetchData();
+        }
+
+        function createDefaultTies() {
+            return [
+                { id: 1, stage: "Group Stage", round_name: "Match 1", match_num: 1, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 11, tie_id: 1, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 12, tie_id: 1, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 13, tie_id: 1, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 2, stage: "Group Stage", round_name: "Match 2", match_num: 2, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 21, tie_id: 2, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 22, tie_id: 2, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 23, tie_id: 2, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 3, stage: "Group Stage", round_name: "Match 3", match_num: 3, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 31, tie_id: 3, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 32, tie_id: 3, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 33, tie_id: 3, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 4, stage: "Group Stage", round_name: "Match 4", match_num: 4, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 41, tie_id: 4, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 42, tie_id: 4, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 43, tie_id: 4, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 5, stage: "Group Stage", round_name: "Match 5", match_num: 5, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 51, tie_id: 5, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 52, tie_id: 5, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 53, tie_id: 5, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 6, stage: "Group Stage", round_name: "Match 6", match_num: 6, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 61, tie_id: 6, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 62, tie_id: 6, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 63, tie_id: 6, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 7, stage: "Playoff", round_name: "Final Juara 1", match_num: 7, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 71, tie_id: 7, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 72, tie_id: 7, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 73, tie_id: 7, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]},
+                { id: 8, stage: "Playoff", round_name: "Perebutan Juara 3", match_num: 8, team1_id: null, team2_id: null, score1: 0, score2: 0, status: "Scheduled", winner_team_id: null, matches: [
+                    { id: 81, tie_id: 8, partai_num: 1, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 82, tie_id: 8, partai_num: 2, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null },
+                    { id: 83, tie_id: 8, partai_num: 3, t1_p1_id: null, t1_p2_id: null, t2_p1_id: null, t2_p2_id: null, pair1_points: 0, pair2_points: 0, t1_penalty: 0, t2_penalty: 0, t1_score: 0, t2_score: 0, status: "Scheduled", winner_team_id: null }
+                ]}
+            ];
+        }
+
         async function fetchData() {
+            // Try backend API (Render or Local)
             try {
-                const res = await fetch('/api/data');
-                const data = await res.json();
-                state = data;
-                renderAll();
-            } catch (err) {
-                console.error("Error fetching data:", err);
+                const apiEndpoint = getApiUrl('/api/data');
+                const res = await fetch(apiEndpoint);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.teams) {
+                        state = data;
+                        isApiMode = true;
+                        if (!state.ties || state.ties.length === 0) state.ties = createDefaultTies();
+                        recalculateStandings();
+                        updateBackendBadge(true);
+                        renderAll();
+                        return;
+                    }
+                }
+            } catch (err) {}
+
+            updateBackendBadge(false);
+
+            // Check local storage
+            const localSaved = localStorage.getItem(STORAGE_KEY);
+            if (localSaved) {
+                try {
+                    state = JSON.parse(localSaved);
+                    if (!state.ties || state.ties.length === 0) state.ties = createDefaultTies();
+                    recalculateStandings();
+                    renderAll();
+                    return;
+                } catch(e) {}
+            }
+
+            // Fallback: load static data.json file (e.g. on GitHub Pages)
+            try {
+                const res = await fetch('data.json');
+                if (res.ok) {
+                    const data = await res.json();
+                    state = data;
+                    if (!state.ties || state.ties.length === 0) state.ties = createDefaultTies();
+                    recalculateStandings();
+                    saveState();
+                    return;
+                }
+            } catch(err) {}
+
+            state = { settings: {}, teams: [], players: [], ties: createDefaultTies(), standings: [] };
+            saveState();
+        }
+
+        function updateBackendBadge(connected) {
+            const badge = document.getElementById('backend-status-badge');
+            if (badge) {
+                if (connected) {
+                    badge.innerText = "Connected to Render Cloud Database";
+                    badge.className = "text-[11px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-0.5 rounded-full font-bold";
+                } else {
+                    badge.innerText = renderBackendUrl ? "Render Offline / Fallback Local" : "Static & Local Storage Mode";
+                    badge.className = "text-[11px] bg-blue-950 text-blue-300 border border-blue-800 px-2.5 py-0.5 rounded-full font-bold";
+                }
+            }
+        }
+
+        function saveState() {
+            recalculateStandings();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            renderAll();
+        }
+
+        function exportDataJSON() {
+            recalculateStandings();
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "data.json");
+            dlAnchorElem.click();
+        }
+
+        function importDataJSON(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    if (imported && (imported.teams || imported.players || imported.ties)) {
+                        state = imported;
+                        saveState();
+                        alert("Berhasil mengimpor data!");
+                    }
+                } catch(err) {
+                    alert("Format file data.json tidak valid!");
+                }
+            };
+            if (event.target.files && event.target.files[0]) {
+                fileReader.readAsText(event.target.files[0]);
             }
         }
 
@@ -703,7 +870,7 @@
             }
 
             grid.innerHTML = state.teams.map(t => {
-                const roster = t.players || [];
+                const roster = state.players.filter(p => p.team_id == t.id);
                 
                 let captainOpts = `<option value="">-- Pilih Kapten Tim --</option>`;
                 roster.forEach(p => {
@@ -765,12 +932,23 @@
         }
 
         async function updateTeamCaptain(teamId, captainId) {
-            await fetch('/api/teams', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'set_captain', id: teamId, captain_id: captainId })
-            });
-            fetchData();
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/teams'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'set_captain', id: teamId, captain_id: captainId })
+                    });
+                } catch(e) {}
+            }
+            
+            const team = state.teams.find(t => t.id == teamId);
+            if (team) {
+                team.captain_id = captainId ? parseInt(captainId) : null;
+                const cap = state.players.find(p => p.id == captainId);
+                team.captain_name = cap ? cap.name : '';
+            }
+            saveState();
         }
 
         function renderPlayers() {
@@ -994,15 +1172,26 @@
             const name = document.getElementById('team-form-name').value;
             const color = document.getElementById('team-form-color').value;
 
-            const action = id ? 'update' : 'create';
-            await fetch('/api/teams', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action, id, name, color })
-            });
+            if (isApiMode) {
+                try {
+                    const action = id ? 'update' : 'create';
+                    await fetch(getApiUrl('/api/teams'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action, id, name, color })
+                    });
+                } catch(err) {}
+            }
+
+            if (id) {
+                const t = state.teams.find(x => x.id == id);
+                if (t) { t.name = name; t.color = color; }
+            } else {
+                state.teams.push({ id: Date.now(), name, color, captain_id: null, captain_name: '' });
+            }
 
             resetTeamForm();
-            fetchData();
+            saveState();
         }
 
         function resetTeamForm() {
@@ -1024,15 +1213,33 @@
                 return;
             }
 
-            const action = id ? 'update' : 'create';
-            await fetch('/api/players', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action, id, name, team_id, tier, is_late })
-            });
+            if (isApiMode) {
+                try {
+                    const action = id ? 'update' : 'create';
+                    await fetch(getApiUrl('/api/players'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action, id, name, team_id, tier, is_late })
+                    });
+                } catch(err) {}
+            }
+
+            const p_team_id = parseInt(team_id);
+            const p_pt = tierPoints[tier] || 3;
+
+            if (id) {
+                const p = state.players.find(x => x.id == id);
+                if (p) {
+                    p.name = name; p.team_id = p_team_id; p.tier = tier; p.power_point = p_pt; p.is_late = is_late;
+                }
+            } else {
+                state.players.push({
+                    id: Date.now(), name, team_id: p_team_id, tier, power_point: p_pt, is_late
+                });
+            }
 
             resetPlayerForm();
-            fetchData();
+            saveState();
         }
 
         function resetPlayerForm() {
@@ -1053,44 +1260,174 @@
         }
 
         async function toggleLateStatus(id) {
-            await fetch('/api/players', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'toggle_late', id })
-            });
-            fetchData();
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/players'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'toggle_late', id })
+                    });
+                } catch(err) {}
+            }
+            const p = state.players.find(x => x.id == id);
+            if (p) p.is_late = p.is_late ? 0 : 1;
+            saveState();
         }
 
         async function deletePlayer(id) {
             if (!confirm("Hapus pemain ini?")) return;
-            await fetch('/api/players', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'delete', id })
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/players'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ action: 'delete', id })
+                    });
+                } catch(err) {}
+            }
+            state.players = state.players.filter(p => p.id != id);
+            state.teams.forEach(t => {
+                if (t.captain_id == id) { t.captain_id = null; t.captain_name = ''; }
             });
-            fetchData();
+            saveState();
         }
 
         async function triggerAutoLineup() {
-            await fetch('/api/lineups/auto', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({})
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/lineups/auto'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({})
+                    });
+                } catch(err) {}
+            }
+
+            state.ties.forEach(tie => {
+                if (!tie.team1_id || !tie.team2_id) return;
+                const t1_p = state.players.filter(p => p.team_id == tie.team1_id);
+                const t2_p = state.players.filter(p => p.team_id == tie.team2_id);
+                const pair1 = sortPairings(t1_p);
+                const pair2 = sortPairings(t2_p);
+
+                tie.matches.forEach((m, idx) => {
+                    const p1 = pair1[idx] || [null, null];
+                    const p2 = pair2[idx] || [null, null];
+                    m.t1_p1_id = p1[0] ? p1[0].id : null; m.t1_p2_id = p1[1] ? p1[1].id : null;
+                    m.t2_p1_id = p2[0] ? p2[0].id : null; m.t2_p2_id = p2[1] ? p2[1].id : null;
+                    m.pair1_points = (p1[0]?p1[0].power_point:0) + (p1[1]?p1[1].power_point:0);
+                    m.pair2_points = (p2[0]?p2[0].power_point:0) + (p2[1]?p2[1].power_point:0);
+                    m.t1_penalty = (p1[0]?.is_late || p1[1]?.is_late) ? 5 : 0;
+                    m.t2_penalty = (p2[0]?.is_late || p2[1]?.is_late) ? 5 : 0;
+                });
             });
+
             alert("Lineup ganda dan susunan partai berhasil disusun otomatis berdasarkan Power Point!");
-            fetchData();
+            saveState();
+        }
+
+        function sortPairings(players) {
+            const byTier = {};
+            players.forEach(p => { (byTier[p.tier] = byTier[p.tier] || []).push(p); });
+            const a1 = (byTier['A1']||[])[0], a2 = (byTier['A2']||[])[0];
+            const bs = (byTier['B']||[]), b1 = bs[0], b2 = bs[1];
+            const c1 = (byTier['C1']||[])[0], c2 = (byTier['C2']||[])[0];
+
+            if (a1 && c1 && a2 && b1 && b2 && c2) return [[a1, c1], [a2, b1], [b2, c2]];
+            const sorted = [...players].sort((a,b) => b.power_point - a.power_point);
+            if (sorted.length >= 6) return [[sorted[0], sorted[4]], [sorted[1], sorted[3]], [sorted[2], sorted[5]]];
+            return [[null, null], [null, null], [null, null]];
+        }
+
+        function recalculateStandings() {
+            state.standings = state.teams.map(team => {
+                let played = 0, wins = 0, losses = 0, partai_won = 0, partai_lost = 0, points_for = 0, points_against = 0;
+                state.ties.filter(t => t.status === 'Completed' && (t.team1_id == team.id || t.team2_id == team.id)).forEach(t => {
+                    played++;
+                    if (t.winner_team_id == team.id) wins++; else losses++;
+                    t.matches.forEach(m => {
+                        if (t.team1_id == team.id) {
+                            if (m.winner_team_id == team.id) partai_won++; else if (m.winner_team_id) partai_lost++;
+                            points_for += m.t1_score; points_against += m.t2_score;
+                        } else {
+                            if (m.winner_team_id == team.id) partai_won++; else if (m.winner_team_id) partai_lost++;
+                            points_for += m.t2_score; points_against += m.t1_score;
+                        }
+                    });
+                });
+                return {
+                    team, played, wins, losses, partai_won, partai_lost,
+                    partai_diff: partai_won - partai_lost, points_for, points_against,
+                    points_diff: points_for - points_against
+                };
+            }).sort((a,b) => b.wins - a.wins || b.partai_diff - a.partai_diff || b.points_diff - a.points_diff);
+
+            if (state.standings.length >= 4 && state.ties.length >= 8) {
+                state.ties[6].team1_id = state.standings[0].team.id;
+                state.ties[6].team2_id = state.standings[1].team.id;
+                state.ties[7].team1_id = state.standings[2].team.id;
+                state.ties[7].team2_id = state.standings[3].team.id;
+            }
         }
 
         async function seedSampleData() {
             if (!confirm("Isi database dengan 4 tim dan 24 contoh pemain untuk demo?")) return;
-            await fetch('/api/seed', { method: 'POST' });
-            fetchData();
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/seed'), { method: 'POST' });
+                    fetchData();
+                    return;
+                } catch(e) {}
+            }
+
+            const demo = [
+                { name: "Tim Alpha", color: "#DC2626", players: ["Andi (A1)", "Budi (A2)", "Cakra (B)", "Deni (B)", "Eko (C1)", "Fajar (C2)"] },
+                { name: "Tim Bravo", color: "#2563EB", players: ["Gilang (A1)", "Hery (A2)", "Irfan (B)", "Joko (B)", "Kiki (C1)", "Lukman (C2)"] },
+                { name: "Tim Charlie", color: "#16A34A", players: ["Mario (A1)", "Niko (A2)", "Oscar (B)", "Putra (B)", "Qori (C1)", "Rian (C2)"] },
+                { name: "Tim Delta", color: "#D97706", players: ["Soni (A1)", "Tono (A2)", "Umar (B)", "Vino (B)", "Wawan (C1)", "Yudi (C2)"] }
+            ];
+
+            const tiers = ['A1', 'A2', 'B', 'B', 'C1', 'C2'];
+            state.teams = [];
+            state.players = [];
+            state.ties = createDefaultTies();
+
+            demo.forEach((d, idx) => {
+                const tId = 100 + idx;
+                state.teams.push({ id: tId, name: d.name, color: d.color, captain_id: null, captain_name: d.players[0] });
+                d.players.forEach((pName, pIdx) => {
+                    const pId = tId * 10 + pIdx;
+                    const tr = tiers[pIdx];
+                    state.players.push({
+                        id: pId, name: pName, team_id: tId, tier: tr, power_point: tierPoints[tr], is_late: (idx === 0 && pIdx === 1) ? 1 : 0
+                    });
+                    if (pIdx === 0) state.teams[idx].captain_id = pId;
+                });
+            });
+
+            state.ties[0].team1_id = state.teams[0].id; state.ties[0].team2_id = state.teams[1].id;
+            state.ties[1].team1_id = state.teams[2].id; state.ties[1].team2_id = state.teams[3].id;
+            state.ties[2].team1_id = state.teams[0].id; state.ties[2].team2_id = state.teams[2].id;
+            state.ties[3].team1_id = state.teams[1].id; state.ties[3].team2_id = state.teams[3].id;
+            state.ties[4].team1_id = state.teams[0].id; state.ties[4].team2_id = state.teams[3].id;
+            state.ties[5].team1_id = state.teams[3].id; state.ties[5].team2_id = state.teams[2].id;
+
+            triggerAutoLineup();
         }
 
         async function resetData() {
             if (!confirm("Kosongkan semua tim dan pemain?")) return;
-            await fetch('/api/reset', { method: 'POST' });
-            fetchData();
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/reset'), { method: 'POST' });
+                    fetchData();
+                    return;
+                } catch(e) {}
+            }
+            state.teams = [];
+            state.players = [];
+            state.ties = createDefaultTies();
+            saveState();
         }
 
         // SCORESHEET & MATCH EDITOR MODAL LOGIC
@@ -1128,15 +1465,23 @@
             const t1_id = document.getElementById('modal-tie-team1').value;
             const t2_id = document.getElementById('modal-tie-team2').value;
 
-            await fetch('/api/ties/update', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ tie_id: currentActiveTieId, team1_id: t1_id, team2_id: t2_id })
-            });
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/ties/update'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tie_id: currentActiveTieId, team1_id: t1_id, team2_id: t2_id })
+                    });
+                } catch(e) {}
+            }
 
-            await fetchData();
             const tie = state.ties.find(t => t.id == currentActiveTieId);
-            if (tie) renderModalMatches(tie);
+            if (tie) {
+                tie.team1_id = parseInt(t1_id) || null;
+                tie.team2_id = parseInt(t2_id) || null;
+                saveState();
+                renderModalMatches(tie);
+            }
         }
 
         function renderModalMatches(tie) {
@@ -1237,31 +1582,65 @@
             const t1_id = document.getElementById('modal-tie-team1').value;
             const t2_id = document.getElementById('modal-tie-team2').value;
 
-            const t1_p1_id = document.getElementById(`select-t1-p1-${matchId}`).value;
-            const t1_p2_id = document.getElementById(`select-t1-p2-${matchId}`).value;
-            const t2_p1_id = document.getElementById(`select-t2-p1-${matchId}`).value;
-            const t2_p2_id = document.getElementById(`select-t2-p2-${matchId}`).value;
+            const t1_p1_id = parseInt(document.getElementById(`select-t1-p1-${matchId}`).value) || null;
+            const t1_p2_id = parseInt(document.getElementById(`select-t1-p2-${matchId}`).value) || null;
+            const t2_p1_id = parseInt(document.getElementById(`select-t2-p1-${matchId}`).value) || null;
+            const t2_p2_id = parseInt(document.getElementById(`select-t2-p2-${matchId}`).value) || null;
 
-            const t1_score = document.getElementById(`score-input-t1-${matchId}`).value;
-            const t2_score = document.getElementById(`score-input-t2-${matchId}`).value;
+            const t1_score = parseInt(document.getElementById(`score-input-t1-${matchId}`).value) || 0;
+            const t2_score = parseInt(document.getElementById(`score-input-t2-${matchId}`).value) || 0;
 
-            await fetch('/api/matches/score', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    match_id: matchId,
-                    tie_id: currentActiveTieId,
-                    team1_id: t1_id,
-                    team2_id: t2_id,
-                    t1_p1_id, t1_p2_id,
-                    t2_p1_id, t2_p2_id,
-                    t1_score, t2_score
-                })
-            });
+            if (isApiMode) {
+                try {
+                    await fetch(getApiUrl('/api/matches/score'), {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            match_id: matchId,
+                            tie_id: currentActiveTieId,
+                            team1_id: t1_id,
+                            team2_id: t2_id,
+                            t1_p1_id, t1_p2_id,
+                            t2_p1_id, t2_p2_id,
+                            t1_score, t2_score
+                        })
+                    });
+                } catch(e) {}
+            }
 
-            await fetchData();
             const tie = state.ties.find(t => t.id == currentActiveTieId);
-            if (tie) renderModalMatches(tie);
+            if (tie) {
+                tie.team1_id = parseInt(t1_id) || tie.team1_id;
+                tie.team2_id = parseInt(t2_id) || tie.team2_id;
+
+                const m = tie.matches.find(x => x.id == matchId);
+                if (m) {
+                    m.t1_p1_id = t1_p1_id; m.t1_p2_id = t1_p2_id;
+                    m.t2_p1_id = t2_p1_id; m.t2_p2_id = t2_p2_id;
+                    m.t1_score = t1_score; m.t2_score = t2_score;
+
+                    const p1 = state.players.find(p => p.id == m.t1_p1_id);
+                    const p2 = state.players.find(p => p.id == m.t1_p2_id);
+                    const p3 = state.players.find(p => p.id == m.t2_p1_id);
+                    const p4 = state.players.find(p => p.id == m.t2_p2_id);
+
+                    m.pair1_points = (p1?p1.power_point:0) + (p2?p2.power_point:0);
+                    m.pair2_points = (p3?p3.power_point:0) + (p4?p4.power_point:0);
+
+                    m.status = (t1_score > 0 || t2_score > 0) ? 'Completed' : 'Scheduled';
+                    m.winner_team_id = t1_score > t2_score ? tie.team1_id : (t2_score > t1_score ? tie.team2_id : null);
+                }
+
+                const t1Wins = tie.matches.filter(x => x.winner_team_id == tie.team1_id).length;
+                const t2Wins = tie.matches.filter(x => x.winner_team_id == tie.team2_id).length;
+                tie.score1 = t1Wins; tie.score2 = t2Wins;
+                const compCount = tie.matches.filter(x => x.status == 'Completed').length;
+                tie.status = compCount > 0 ? (compCount == 3 || t1Wins >= 2 || t2Wins >= 2 ? 'Completed' : 'Live') : 'Scheduled';
+                tie.winner_team_id = t1Wins > t2Wins ? tie.team1_id : (t2Wins > t1Wins ? tie.team2_id : null);
+
+                saveState();
+                renderModalMatches(tie);
+            }
         }
     </script>
 </body>
