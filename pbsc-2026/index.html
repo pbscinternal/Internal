@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Supabase JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
         .glass-panel { background: rgba(17, 24, 39, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
@@ -477,7 +479,7 @@
                         </div>
                     </div>
 
-                    <!-- DATA MANAGEMENT & GITHUB PAGES PERSISTENCE BOX -->
+                    <!-- DATA MANAGEMENT & CLOUD CONFIG BOX -->
                     <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
                         <div class="flex items-center justify-between border-b border-gray-800 pb-3">
                             <h4 class="text-sm font-bold text-white flex items-center space-x-2">
@@ -486,18 +488,39 @@
                             </h4>
                             <span id="backend-status-badge" class="text-[11px] bg-blue-950 text-blue-300 border border-blue-800 px-2.5 py-0.5 rounded-full font-bold">Static / Local Mode</span>
                         </div>
+
+                        <!-- SUPABASE CLOUD DATABASE CONFIG BOX -->
+                        <div class="bg-emerald-950/30 border border-emerald-800/60 p-4 rounded-xl space-y-3">
+                            <h5 class="text-xs font-extrabold text-emerald-300 flex items-center space-x-1.5">
+                                <i class="fa-solid fa-database text-emerald-400"></i>
+                                <span>Hubungkan Supabase Cloud Database (Recomended ⚡ Realtime)</span>
+                            </h5>
+                            <p class="text-[11px] text-gray-300 leading-relaxed">
+                                Masukkan <strong>Project URL</strong> dan <strong>Anon Public Key</strong> dari akun Supabase Anda:
+                            </p>
+                            <div class="space-y-2">
+                                <input type="url" id="supabase-url-input" placeholder="https://xyzproject.supabase.co" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-white">
+                                <input type="text" id="supabase-key-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-white">
+                                <div class="flex justify-end pt-1">
+                                    <button onclick="saveSupabaseConfig()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs transition flex items-center space-x-1.5">
+                                        <i class="fa-solid fa-plug"></i>
+                                        <span>Simpan & Hubungkan Supabase</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- Export Button -->
                             <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-800 space-y-2">
                                 <h5 class="text-xs font-bold text-white flex items-center space-x-1.5">
                                     <i class="fa-solid fa-download text-emerald-400"></i>
-                                    <span>1. Export / Download data.json</span>
+                                    <span>Export / Download data.json</span>
                                 </h5>
-                                <p class="text-[11px] text-gray-400 leading-relaxed">Unduh file data turnamen terbaru untuk disimpan atau di-upload ke repository GitHub.</p>
-                                <button onclick="exportDataJSON()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center space-x-2">
+                                <p class="text-[11px] text-gray-400 leading-relaxed">Unduh file data turnamen terbaru untuk backup.</p>
+                                <button onclick="exportDataJSON()" class="w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center space-x-2">
                                     <i class="fa-solid fa-file-export"></i>
-                                    <span>Download data.json Terbaru</span>
+                                    <span>Download data.json</span>
                                 </button>
                             </div>
 
@@ -505,44 +528,15 @@
                             <div class="bg-gray-900/80 p-4 rounded-xl border border-gray-800 space-y-2">
                                 <h5 class="text-xs font-bold text-white flex items-center space-x-1.5">
                                     <i class="fa-solid fa-upload text-blue-400"></i>
-                                    <span>2. Import data.json</span>
+                                    <span>Import data.json</span>
                                 </h5>
                                 <p class="text-[11px] text-gray-400 leading-relaxed">Muat data dari file data.json lokal ke website ini.</p>
                                 <input type="file" id="import-json-file" accept=".json" onchange="importDataJSON(event)" class="hidden">
-                                <button onclick="document.getElementById('import-json-file').click()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center space-x-2">
+                                <button onclick="document.getElementById('import-json-file').click()" class="w-full bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition flex items-center justify-center space-x-2">
                                     <i class="fa-solid fa-file-import"></i>
                                     <span>Pilih & Upload data.json</span>
                                 </button>
                             </div>
-                        </div>
-
-                        <!-- RENDER BACKEND CONFIG BOX -->
-                        <div class="bg-purple-950/30 border border-purple-800/60 p-4 rounded-xl space-y-2">
-                            <h5 class="text-xs font-extrabold text-purple-300 flex items-center space-x-1.5">
-                                <i class="fa-solid fa-server text-purple-400"></i>
-                                <span>3. Hubungkan Backend Render (Realtime Cloud Database)</span>
-                            </h5>
-                            <p class="text-[11px] text-gray-300 leading-relaxed">
-                                Masukkan URL Render Web Service Anda (contoh: <code class="bg-gray-900 px-1 py-0.5 rounded text-amber-300">https://pbsc-backend.onrender.com</code>) agar data tersimpan otomatis di cloud secara realtime:
-                            </p>
-                            <div class="flex space-x-2 pt-1">
-                                <input type="url" id="render-url-input" placeholder="https://pbsc-backend.onrender.com" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-3 py-1.5 text-xs text-white">
-                                <button onclick="saveRenderUrl()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs transition whitespace-nowrap">
-                                    Simpan Backend
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Instructions Banner -->
-                        <div class="bg-blue-950/40 border border-blue-500/30 p-4 rounded-xl text-xs space-y-2">
-                            <h5 class="font-extrabold text-blue-300 flex items-center space-x-1.5">
-                                <i class="fa-solid fa-circle-info"></i>
-                                <span>Cara Simpan Data Permanen (Pilih Salah Satu):</span>
-                            </h5>
-                            <ul class="list-disc list-inside text-gray-300 space-y-1 text-[11px] leading-relaxed">
-                                <li><strong>Opsi A (Render Cloud):</strong> Hubungkan Backend Render di atas ➔ Data otomatis ter-update realtime bagi semua pengunjung!</li>
-                                <li><strong>Opsi B (Manual GitHub Commit):</strong> Klik <strong class="text-emerald-400">"Download data.json Terbaru"</strong> ➔ Upload & replace file <code class="bg-gray-900 px-1 py-0.5 rounded text-amber-300">data.json</code> di repo <a href="https://github.com/pbscinternal/Internal" target="_blank" class="text-blue-400 underline">github.com/pbscinternal/Internal</a>.</li>
-                            </ul>
                         </div>
 
                         <div class="flex items-center justify-between pt-2 border-t border-gray-800">
@@ -622,7 +616,9 @@
     <!-- JAVASCRIPT APPLICATION CODE -->
     <script>
         const STORAGE_KEY = 'pbsc_tournament_state';
-        let renderBackendUrl = localStorage.getItem('render_backend_url') || '';
+        let supabaseUrl = localStorage.getItem('supabase_url') || 'https://wljeunuurqsitjkrbbqx.supabase.co';
+        let supabaseAnonKey = localStorage.getItem('supabase_anon_key') || 'sb_publishable_8ziHQ_oi9r530G1f0Q0_bg_7aXEfiVk';
+        let supabaseClient = null;
 
         let state = {
             settings: {},
@@ -633,35 +629,69 @@
         };
 
         let currentActiveTieId = null;
-        let isApiMode = false;
+        let isSupabaseActive = false;
         const tierPoints = { 'A1': 5, 'A2': 4, 'B': 3, 'C1': 2, 'C2': 1 };
 
         document.addEventListener('DOMContentLoaded', () => {
-            const input = document.getElementById('render-url-input');
-            if (input && renderBackendUrl) input.value = renderBackendUrl;
+            const urlInput = document.getElementById('supabase-url-input');
+            const keyInput = document.getElementById('supabase-key-input');
+            if (urlInput && supabaseUrl) urlInput.value = supabaseUrl;
+            if (keyInput && supabaseAnonKey) keyInput.value = supabaseAnonKey;
+
+            initSupabaseClient();
             fetchData();
         });
 
-        function getApiUrl(endpoint) {
-            if (renderBackendUrl) {
-                return renderBackendUrl.replace(/\/$/, '') + endpoint;
+        function initSupabaseClient() {
+            if (supabaseUrl && supabaseAnonKey && window.supabase) {
+                try {
+                    const cleanUrl = supabaseUrl.replace(/\/rest\/v1\/?$/, '').replace(/\/$/, '');
+                    supabaseClient = window.supabase.createClient(cleanUrl, supabaseAnonKey);
+                    isSupabaseActive = true;
+                    setupSupabaseRealtime();
+                    return true;
+                } catch(e) {
+                    console.error("Supabase client error:", e);
+                }
             }
-            return endpoint;
+            isSupabaseActive = false;
+            return false;
         }
 
-        function saveRenderUrl() {
-            const input = document.getElementById('render-url-input');
-            const val = input ? input.value.trim() : '';
-            if (val) {
-                renderBackendUrl = val;
-                localStorage.setItem('render_backend_url', val);
-                alert("URL Render Backend tersimpan! Website akan memuat data dari: " + val);
+        function saveSupabaseConfig() {
+            const urlInput = document.getElementById('supabase-url-input');
+            const keyInput = document.getElementById('supabase-key-input');
+
+            const urlVal = urlInput ? urlInput.value.trim() : '';
+            const keyVal = keyInput ? keyInput.value.trim() : '';
+
+            if (urlVal && keyVal) {
+                supabaseUrl = urlVal;
+                supabaseAnonKey = keyVal;
+                localStorage.setItem('supabase_url', urlVal);
+                localStorage.setItem('supabase_anon_key', keyVal);
+                initSupabaseClient();
+                alert("Konfigurasi Supabase disimpan!");
             } else {
-                renderBackendUrl = '';
-                localStorage.removeItem('render_backend_url');
-                alert("URL Render dihapus. Mode kembali ke lokal/statis.");
+                supabaseUrl = ''; supabaseAnonKey = '';
+                localStorage.removeItem('supabase_url');
+                localStorage.removeItem('supabase_anon_key');
+                supabaseClient = null; isSupabaseActive = false;
+                alert("Konfigurasi Supabase dihapus.");
             }
             fetchData();
+        }
+
+        function setupSupabaseRealtime() {
+            if (!supabaseClient) return;
+            try {
+                supabaseClient
+                    .channel('public-db-changes')
+                    .on('postgres_changes', { event: '*', schema: 'public' }, () => {
+                        fetchFromSupabase();
+                    })
+                    .subscribe();
+            } catch(e) {}
         }
 
         function createDefaultTies() {
@@ -710,39 +740,30 @@
         }
 
         async function fetchData() {
-            // Try backend API (Render or Local)
-            try {
-                const apiEndpoint = getApiUrl('/api/data');
-                const res = await fetch(apiEndpoint);
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.teams) {
-                        state = data;
-                        isApiMode = true;
-                        if (!state.ties || state.ties.length === 0) state.ties = createDefaultTies();
-                        recalculateStandings();
-                        updateBackendBadge(true);
-                        renderAll();
-                        return;
-                    }
+            // Check Supabase first
+            if (supabaseClient) {
+                const ok = await fetchFromSupabase();
+                if (ok) {
+                    updateBackendBadge('supabase');
+                    renderAll();
+                    return;
                 }
-            } catch (err) {}
+            }
 
-            updateBackendBadge(false);
-
-            // Check local storage
+            // Fallback 1: Local Storage
             const localSaved = localStorage.getItem(STORAGE_KEY);
             if (localSaved) {
                 try {
                     state = JSON.parse(localSaved);
                     if (!state.ties || state.ties.length === 0) state.ties = createDefaultTies();
                     recalculateStandings();
+                    updateBackendBadge('local');
                     renderAll();
                     return;
                 } catch(e) {}
             }
 
-            // Fallback: load static data.json file (e.g. on GitHub Pages)
+            // Fallback 2: Static data.json
             try {
                 const res = await fetch('data.json');
                 if (res.ok) {
@@ -751,22 +772,67 @@
                     if (!state.ties || state.ties.length === 0) state.ties = createDefaultTies();
                     recalculateStandings();
                     saveState();
+                    updateBackendBadge('local');
                     return;
                 }
             } catch(err) {}
 
             state = { settings: {}, teams: [], players: [], ties: createDefaultTies(), standings: [] };
+            updateBackendBadge('local');
             saveState();
         }
 
-        function updateBackendBadge(connected) {
+        async function fetchFromSupabase() {
+            try {
+                const { data: teams } = await supabaseClient.from('teams').select('*');
+                const { data: players } = await supabaseClient.from('players').select('*');
+                const { data: ties } = await supabaseClient.from('ties').select('*').order('id');
+                const { data: matches } = await supabaseClient.from('matches').select('*').order('id');
+
+                if (!teams || !players || !ties || !matches) return false;
+
+                const playerMap = {};
+                (players || []).forEach(p => playerMap[p.id] = p);
+
+                const tiesWithMatches = (ties || []).map(tie => {
+                    const tieMatches = (matches || []).filter(m => m.tie_id == tie.id).map(m => ({
+                        ...m,
+                        t1_p1: playerMap[m.t1_p1_id],
+                        t1_p2: playerMap[m.t1_p2_id],
+                        t2_p1: playerMap[m.t2_p1_id],
+                        t2_p2: playerMap[m.t2_p2_id]
+                    }));
+                    return { ...tie, matches: tieMatches };
+                });
+
+                const teamsWithPlayers = (teams || []).map(t => ({
+                    ...t,
+                    players: (players || []).filter(p => p.team_id == t.id)
+                }));
+
+                state = {
+                    settings: {},
+                    teams: teamsWithPlayers,
+                    players: players || [],
+                    ties: tiesWithMatches.length > 0 ? tiesWithMatches : createDefaultTies(),
+                    standings: []
+                };
+                recalculateStandings();
+                return true;
+            } catch(e) {
+                console.error("Supabase fetch failed:", e);
+                return false;
+            }
+        }
+
+        function updateBackendBadge(mode) {
             const badge = document.getElementById('backend-status-badge');
             if (badge) {
-                if (connected) {
-                    badge.innerText = "Connected to Render Cloud Database";
+                if (mode === 'supabase') {
+                    badge.innerText = "⚡ Connected to Supabase Cloud Database";
                     badge.className = "text-[11px] bg-emerald-950 text-emerald-300 border border-emerald-800 px-2.5 py-0.5 rounded-full font-bold";
                 } else {
-                    badge.innerText = renderBackendUrl ? "Render Offline / Fallback Local" : "Static & Local Storage Mode";
+                    badge.innerText = "Static & Local Storage Mode";
                     badge.className = "text-[11px] bg-blue-950 text-blue-300 border border-blue-800 px-2.5 py-0.5 rounded-full font-bold";
                 }
             }
@@ -932,21 +998,22 @@
         }
 
         async function updateTeamCaptain(teamId, captainId) {
-            if (isApiMode) {
+            const cap = state.players.find(p => p.id == captainId);
+            const capName = cap ? cap.name : '';
+
+            if (supabaseClient) {
                 try {
-                    await fetch(getApiUrl('/api/teams'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'set_captain', id: teamId, captain_id: captainId })
-                    });
+                    await supabaseClient.from('teams').update({
+                        captain_id: captainId ? parseInt(captainId) : null,
+                        captain_name: capName
+                    }).eq('id', teamId);
                 } catch(e) {}
             }
             
             const team = state.teams.find(t => t.id == teamId);
             if (team) {
                 team.captain_id = captainId ? parseInt(captainId) : null;
-                const cap = state.players.find(p => p.id == captainId);
-                team.captain_name = cap ? cap.name : '';
+                team.captain_name = capName;
             }
             saveState();
         }
@@ -1172,14 +1239,17 @@
             const name = document.getElementById('team-form-name').value;
             const color = document.getElementById('team-form-color').value;
 
-            if (isApiMode) {
+            if (supabaseClient) {
                 try {
-                    const action = id ? 'update' : 'create';
-                    await fetch(getApiUrl('/api/teams'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action, id, name, color })
-                    });
+                    if (id) {
+                        await supabaseClient.from('teams').update({ name, color }).eq('id', id);
+                    } else {
+                        await supabaseClient.from('teams').insert([{ name, color }]);
+                    }
+                    resetTeamForm();
+                    await fetchFromSupabase();
+                    renderAll();
+                    return;
                 } catch(err) {}
             }
 
@@ -1213,19 +1283,26 @@
                 return;
             }
 
-            if (isApiMode) {
-                try {
-                    const action = id ? 'update' : 'create';
-                    await fetch(getApiUrl('/api/players'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action, id, name, team_id, tier, is_late })
-                    });
-                } catch(err) {}
-            }
-
             const p_team_id = parseInt(team_id);
             const p_pt = tierPoints[tier] || 3;
+
+            if (supabaseClient) {
+                try {
+                    if (id) {
+                        await supabaseClient.from('players').update({
+                            name, team_id: p_team_id, tier, power_point: p_pt, is_late
+                        }).eq('id', id);
+                    } else {
+                        await supabaseClient.from('players').insert([{
+                            name, team_id: p_team_id, tier, power_point: p_pt, is_late
+                        }]);
+                    }
+                    resetPlayerForm();
+                    await fetchFromSupabase();
+                    renderAll();
+                    return;
+                } catch(err) {}
+            }
 
             if (id) {
                 const p = state.players.find(x => x.id == id);
@@ -1260,29 +1337,31 @@
         }
 
         async function toggleLateStatus(id) {
-            if (isApiMode) {
+            const p = state.players.find(x => x.id == id);
+            if (!p) return;
+            const nextLate = p.is_late ? 0 : 1;
+
+            if (supabaseClient) {
                 try {
-                    await fetch(getApiUrl('/api/players'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'toggle_late', id })
-                    });
+                    await supabaseClient.from('players').update({ is_late: nextLate }).eq('id', id);
+                    await fetchFromSupabase();
+                    renderAll();
+                    return;
                 } catch(err) {}
             }
-            const p = state.players.find(x => x.id == id);
-            if (p) p.is_late = p.is_late ? 0 : 1;
+
+            p.is_late = nextLate;
             saveState();
         }
 
         async function deletePlayer(id) {
             if (!confirm("Hapus pemain ini?")) return;
-            if (isApiMode) {
+            if (supabaseClient) {
                 try {
-                    await fetch(getApiUrl('/api/players'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ action: 'delete', id })
-                    });
+                    await supabaseClient.from('players').delete().eq('id', id);
+                    await fetchFromSupabase();
+                    renderAll();
+                    return;
                 } catch(err) {}
             }
             state.players = state.players.filter(p => p.id != id);
@@ -1293,16 +1372,6 @@
         }
 
         async function triggerAutoLineup() {
-            if (isApiMode) {
-                try {
-                    await fetch(getApiUrl('/api/lineups/auto'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({})
-                    });
-                } catch(err) {}
-            }
-
             state.ties.forEach(tie => {
                 if (!tie.team1_id || !tie.team2_id) return;
                 const t1_p = state.players.filter(p => p.team_id == tie.team1_id);
@@ -1321,6 +1390,25 @@
                     m.t2_penalty = (p2[0]?.is_late || p2[1]?.is_late) ? 5 : 0;
                 });
             });
+
+            if (supabaseClient) {
+                try {
+                    for (const tie of state.ties) {
+                        for (const m of (tie.matches || [])) {
+                            await supabaseClient.from('matches').update({
+                                t1_p1_id: m.t1_p1_id, t1_p2_id: m.t1_p2_id,
+                                t2_p1_id: m.t2_p1_id, t2_p2_id: m.t2_p2_id,
+                                pair1_points: m.pair1_points, pair2_points: m.pair2_points,
+                                t1_penalty: m.t1_penalty, t2_penalty: m.t2_penalty
+                            }).eq('id', m.id);
+                        }
+                    }
+                    alert("Lineup ganda otomatis disinkronkan ke Supabase!");
+                    await fetchFromSupabase();
+                    renderAll();
+                    return;
+                } catch(e) {}
+            }
 
             alert("Lineup ganda dan susunan partai berhasil disusun otomatis berdasarkan Power Point!");
             saveState();
@@ -1372,13 +1460,6 @@
 
         async function seedSampleData() {
             if (!confirm("Isi database dengan 4 tim dan 24 contoh pemain untuk demo?")) return;
-            if (isApiMode) {
-                try {
-                    await fetch(getApiUrl('/api/seed'), { method: 'POST' });
-                    fetchData();
-                    return;
-                } catch(e) {}
-            }
 
             const demo = [
                 { name: "Tim Alpha", color: "#DC2626", players: ["Andi (A1)", "Budi (A2)", "Cakra (B)", "Deni (B)", "Eko (C1)", "Fajar (C2)"] },
@@ -1417,10 +1498,12 @@
 
         async function resetData() {
             if (!confirm("Kosongkan semua tim dan pemain?")) return;
-            if (isApiMode) {
+            if (supabaseClient) {
                 try {
-                    await fetch(getApiUrl('/api/reset'), { method: 'POST' });
-                    fetchData();
+                    await supabaseClient.from('players').delete().neq('id', 0);
+                    await supabaseClient.from('teams').delete().neq('id', 0);
+                    await fetchFromSupabase();
+                    renderAll();
                     return;
                 } catch(e) {}
             }
@@ -1439,7 +1522,6 @@
             document.getElementById('modal-score-title').innerText = `${tie.round_name} • Match Editor`;
             document.getElementById('modal-score-sub').innerText = `Tentukan Tim Bertanding, Pilih Pasangan Pemain, & Input Skor`;
 
-            // Populate Team Selectors for Tie
             const t1Select = document.getElementById('modal-tie-team1');
             const t2Select = document.getElementById('modal-tie-team2');
 
@@ -1465,20 +1547,21 @@
             const t1_id = document.getElementById('modal-tie-team1').value;
             const t2_id = document.getElementById('modal-tie-team2').value;
 
-            if (isApiMode) {
+            const t1_val = parseInt(t1_id) || null;
+            const t2_val = parseInt(t2_id) || null;
+
+            if (supabaseClient) {
                 try {
-                    await fetch(getApiUrl('/api/ties/update'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ tie_id: currentActiveTieId, team1_id: t1_id, team2_id: t2_id })
-                    });
+                    await supabaseClient.from('ties').update({
+                        team1_id: t1_val, team2_id: t2_val
+                    }).eq('id', currentActiveTieId);
                 } catch(e) {}
             }
 
             const tie = state.ties.find(t => t.id == currentActiveTieId);
             if (tie) {
-                tie.team1_id = parseInt(t1_id) || null;
-                tie.team2_id = parseInt(t2_id) || null;
+                tie.team1_id = t1_val;
+                tie.team2_id = t2_val;
                 saveState();
                 renderModalMatches(tie);
             }
@@ -1590,57 +1673,60 @@
             const t1_score = parseInt(document.getElementById(`score-input-t1-${matchId}`).value) || 0;
             const t2_score = parseInt(document.getElementById(`score-input-t2-${matchId}`).value) || 0;
 
-            if (isApiMode) {
+            const tie = state.ties.find(t => t.id == currentActiveTieId);
+            if (!tie) return;
+
+            tie.team1_id = parseInt(t1_id) || tie.team1_id;
+            tie.team2_id = parseInt(t2_id) || tie.team2_id;
+
+            const m = tie.matches.find(x => x.id == matchId);
+            if (m) {
+                m.t1_p1_id = t1_p1_id; m.t1_p2_id = t1_p2_id;
+                m.t2_p1_id = t2_p1_id; m.t2_p2_id = t2_p2_id;
+                m.t1_score = t1_score; m.t2_score = t2_score;
+
+                const p1 = state.players.find(p => p.id == m.t1_p1_id);
+                const p2 = state.players.find(p => p.id == m.t1_p2_id);
+                const p3 = state.players.find(p => p.id == m.t2_p1_id);
+                const p4 = state.players.find(p => p.id == m.t2_p2_id);
+
+                m.pair1_points = (p1?p1.power_point:0) + (p2?p2.power_point:0);
+                m.pair2_points = (p3?p3.power_point:0) + (p4?p4.power_point:0);
+
+                m.status = (t1_score > 0 || t2_score > 0) ? 'Completed' : 'Scheduled';
+                m.winner_team_id = t1_score > t2_score ? tie.team1_id : (t2_score > t1_score ? tie.team2_id : null);
+            }
+
+            const t1Wins = tie.matches.filter(x => x.winner_team_id == tie.team1_id).length;
+            const t2Wins = tie.matches.filter(x => x.winner_team_id == tie.team2_id).length;
+            tie.score1 = t1Wins; tie.score2 = t2Wins;
+            const compCount = tie.matches.filter(x => x.status == 'Completed').length;
+            tie.status = compCount > 0 ? (compCount == 3 || t1Wins >= 2 || t2Wins >= 2 ? 'Completed' : 'Live') : 'Scheduled';
+            tie.winner_team_id = t1Wins > t2Wins ? tie.team1_id : (t2Wins > t1Wins ? tie.team2_id : null);
+
+            if (supabaseClient) {
                 try {
-                    await fetch(getApiUrl('/api/matches/score'), {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            match_id: matchId,
-                            tie_id: currentActiveTieId,
-                            team1_id: t1_id,
-                            team2_id: t2_id,
-                            t1_p1_id, t1_p2_id,
-                            t2_p1_id, t2_p2_id,
-                            t1_score, t2_score
-                        })
-                    });
+                    await supabaseClient.from('matches').update({
+                        t1_p1_id, t1_p2_id, t2_p1_id, t2_p2_id,
+                        t1_score, t2_score,
+                        pair1_points: m.pair1_points, pair2_points: m.pair2_points,
+                        status: m.status, winner_team_id: m.winner_team_id
+                    }).eq('id', matchId);
+
+                    await supabaseClient.from('ties').update({
+                        team1_id: tie.team1_id, team2_id: tie.team2_id,
+                        score1: tie.score1, score2: tie.score2,
+                        status: tie.status, winner_team_id: tie.winner_team_id
+                    }).eq('id', tie.id);
+
+                    await fetchFromSupabase();
+                    renderModalMatches(tie);
+                    return;
                 } catch(e) {}
             }
 
-            const tie = state.ties.find(t => t.id == currentActiveTieId);
-            if (tie) {
-                tie.team1_id = parseInt(t1_id) || tie.team1_id;
-                tie.team2_id = parseInt(t2_id) || tie.team2_id;
-
-                const m = tie.matches.find(x => x.id == matchId);
-                if (m) {
-                    m.t1_p1_id = t1_p1_id; m.t1_p2_id = t1_p2_id;
-                    m.t2_p1_id = t2_p1_id; m.t2_p2_id = t2_p2_id;
-                    m.t1_score = t1_score; m.t2_score = t2_score;
-
-                    const p1 = state.players.find(p => p.id == m.t1_p1_id);
-                    const p2 = state.players.find(p => p.id == m.t1_p2_id);
-                    const p3 = state.players.find(p => p.id == m.t2_p1_id);
-                    const p4 = state.players.find(p => p.id == m.t2_p2_id);
-
-                    m.pair1_points = (p1?p1.power_point:0) + (p2?p2.power_point:0);
-                    m.pair2_points = (p3?p3.power_point:0) + (p4?p4.power_point:0);
-
-                    m.status = (t1_score > 0 || t2_score > 0) ? 'Completed' : 'Scheduled';
-                    m.winner_team_id = t1_score > t2_score ? tie.team1_id : (t2_score > t1_score ? tie.team2_id : null);
-                }
-
-                const t1Wins = tie.matches.filter(x => x.winner_team_id == tie.team1_id).length;
-                const t2Wins = tie.matches.filter(x => x.winner_team_id == tie.team2_id).length;
-                tie.score1 = t1Wins; tie.score2 = t2Wins;
-                const compCount = tie.matches.filter(x => x.status == 'Completed').length;
-                tie.status = compCount > 0 ? (compCount == 3 || t1Wins >= 2 || t2Wins >= 2 ? 'Completed' : 'Live') : 'Scheduled';
-                tie.winner_team_id = t1Wins > t2Wins ? tie.team1_id : (t2Wins > t1Wins ? tie.team2_id : null);
-
-                saveState();
-                renderModalMatches(tie);
-            }
+            saveState();
+            renderModalMatches(tie);
         }
     </script>
 </body>
