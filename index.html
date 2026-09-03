@@ -401,13 +401,13 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- FORMS INPUT: TIM & PEMAIN -->
                     <div class="space-y-6">
-                        <!-- Form Tim (Langkah 1: Buat Tim tanpa Kapten) -->
+                        <!-- Form Tim (Buat / Edit Tim) -->
                         <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
                             <div>
                                 <span class="text-[10px] uppercase font-bold text-blue-400 bg-blue-950 border border-blue-800 px-2 py-0.5 rounded">Langkah 1</span>
                                 <h3 class="text-sm font-bold text-white flex items-center space-x-2 mt-1">
                                     <i class="fa-solid fa-shield-cat text-blue-400"></i>
-                                    <span>Buat / Edit Tim</span>
+                                    <span id="team-form-title">Buat / Edit Tim</span>
                                 </h3>
                             </div>
                             <form id="form-team" onsubmit="handleTeamSubmit(event)" class="space-y-3 text-xs">
@@ -421,19 +421,19 @@
                                     <input type="color" id="team-form-color" value="#2563eb" class="w-full h-9 bg-gray-900 border border-gray-700 rounded-xl p-1 cursor-pointer">
                                 </div>
                                 <div class="flex space-x-2 pt-2">
-                                    <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-xl transition">Simpan Tim</button>
+                                    <button type="submit" id="team-form-submit-btn" class="flex-1 bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 rounded-xl transition">Simpan Tim</button>
                                     <button type="button" onclick="resetTeamForm()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-3 py-2 rounded-xl transition">Batal</button>
                                 </div>
                             </form>
                         </div>
 
-                        <!-- Form Pemain (Langkah 2: Tambah Pemain tanpa/dengan Tim & Upload Foto) -->
+                        <!-- Form Pemain (Tambah / Edit Pemain & Upload Foto) -->
                         <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4">
                             <div>
                                 <span class="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-950 border border-emerald-800 px-2 py-0.5 rounded">Langkah 2</span>
                                 <h3 class="text-sm font-bold text-white flex items-center space-x-2 mt-1">
                                     <i class="fa-solid fa-user-plus text-emerald-400"></i>
-                                    <span>Tambah Pemain & Foto (Opsional)</span>
+                                    <span>Tambah / Edit Pemain & Foto</span>
                                 </h3>
                             </div>
                             <form id="form-player" onsubmit="handlePlayerSubmit(event)" class="space-y-3 text-xs">
@@ -488,6 +488,33 @@
 
                     <!-- ADMIN DATA MANAGEMENT LISTS & SIMPAN PERMANEN -->
                     <div class="lg:col-span-2 space-y-6">
+
+                        <!-- EDITOR & KELOLA TIM ADMIN -->
+                        <div class="glass-panel rounded-2xl border border-gray-800 overflow-hidden space-y-3 p-5">
+                            <h4 class="text-sm font-bold text-white flex items-center justify-between">
+                                <span class="flex items-center space-x-2">
+                                    <i class="fa-solid fa-shield-halved text-blue-400"></i>
+                                    <span>Daftar & Edit Tim Admin</span>
+                                </span>
+                                <span id="admin-team-count-badge" class="text-xs bg-blue-900/50 text-blue-300 border border-blue-500/30 px-2.5 py-0.5 rounded-full">0 Tim</span>
+                            </h4>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs text-gray-300">
+                                    <thead class="bg-gray-900 sticky top-0 uppercase text-gray-400">
+                                        <tr>
+                                            <th class="py-2.5 px-3">Nama Tim</th>
+                                            <th class="py-2.5 px-3 text-center">Warna Badge</th>
+                                            <th class="py-2.5 px-3">Kapten Tim</th>
+                                            <th class="py-2.5 px-3 text-center">Roster</th>
+                                            <th class="py-2.5 px-3 text-right">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-teams-tbody" class="divide-y divide-gray-800">
+                                        <!-- Populated by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                         <!-- RANDOMIZER TIM PER GRADE INTERAKTIF REALTIME -->
                         <div class="glass-panel p-5 rounded-2xl border border-gray-800 space-y-4 bg-gradient-to-br from-purple-950/40 via-gray-900 to-gray-950">
@@ -1002,8 +1029,8 @@
 
         async function fetchFromSupabase() {
             try {
-                const { data: teams } = await supabaseClient.from('teams').select('*');
-                const { data: players } = await supabaseClient.from('players').select('*');
+                const { data: teams } = await supabaseClient.from('teams').select('*').order('id');
+                const { data: players } = await supabaseClient.from('players').select('*').order('id');
                 const { data: ties } = await supabaseClient.from('ties').select('*').order('id');
                 const { data: matches } = await supabaseClient.from('matches').select('*').order('id');
 
@@ -1521,6 +1548,49 @@
             const badgeCount = document.getElementById('admin-player-count-badge');
             if (badgeCount) badgeCount.innerText = `${state.players.length} / 24 Pemain`;
 
+            // RENDER ADMIN TEAMS TABLE
+            const adminTeamTbody = document.getElementById('admin-teams-tbody');
+            const badgeTeamCount = document.getElementById('admin-team-count-badge');
+            if (badgeTeamCount) badgeTeamCount.innerText = `${state.teams.length} Tim`;
+
+            if (adminTeamTbody) {
+                if (state.teams.length === 0) {
+                    adminTeamTbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-gray-500">Belum ada tim terdaftar. Gunakan Form Langkah 1 untuk membuat tim.</td></tr>`;
+                } else {
+                    adminTeamTbody.innerHTML = state.teams.map(t => {
+                        const rosterCount = state.players.filter(p => p.team_id == t.id).length;
+                        return `
+                            <tr class="hover:bg-gray-800/40">
+                                <td class="py-2.5 px-3 font-bold text-white flex items-center space-x-2">
+                                    <div class="w-3.5 h-3.5 rounded-full flex-shrink-0" style="background-color: ${t.color}"></div>
+                                    <span>${t.name}</span>
+                                </td>
+                                <td class="py-2.5 px-3 text-center">
+                                    <span class="px-2 py-0.5 rounded text-[10px] font-mono text-white" style="background-color: ${t.color}">${t.color}</span>
+                                </td>
+                                <td class="py-2.5 px-3 text-amber-400 font-semibold">
+                                    ${t.captain_name ? `<i class="fa-solid fa-crown text-[10px] mr-1"></i>${t.captain_name}` : '<span class="text-gray-500 italic">Belum Dipilih</span>'}
+                                </td>
+                                <td class="py-2.5 px-3 text-center font-bold text-gray-300">
+                                    ${rosterCount} / 6
+                                </td>
+                                <td class="py-2.5 px-3 text-right space-x-2">
+                                    <button onclick="editTeam(${t.id})" class="text-blue-400 hover:text-blue-300 font-semibold text-xs inline-flex items-center space-x-1" title="Edit Nama & Warna Tim">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        <span>Edit</span>
+                                    </button>
+                                    <button onclick="deleteTeam(${t.id})" class="text-rose-400 hover:text-rose-300 font-semibold text-xs inline-flex items-center space-x-1 ml-2" title="Hapus Tim">
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Hapus</span>
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+                }
+            }
+
+            // RENDER ADMIN PLAYERS TABLE
             const adminTbody = document.getElementById('admin-players-tbody');
             if (!adminTbody) return;
 
@@ -1569,7 +1639,7 @@
             }).join('');
         }
 
-        // ADMIN FORMS & ACTIONS
+        // ADMIN FORMS & ACTIONS FOR TEAMS
         async function handleTeamSubmit(e) {
             e.preventDefault();
             if (!isAdminLoggedIn) { alert("Anda harus login Admin terlebih dahulu!"); return; }
@@ -1602,12 +1672,53 @@
             saveState();
         }
 
+        function editTeam(id) {
+            if (!isAdminLoggedIn) { alert("Anda harus login Admin terlebih dahulu!"); return; }
+            const t = state.teams.find(x => x.id == id);
+            if (!t) return;
+            document.getElementById('team-form-id').value = t.id;
+            document.getElementById('team-form-name').value = t.name;
+            document.getElementById('team-form-color').value = t.color || '#2563eb';
+            
+            const submitBtn = document.getElementById('team-form-submit-btn');
+            if (submitBtn) submitBtn.innerText = "Update Tim";
+
+            const formEl = document.getElementById('form-team');
+            if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        async function deleteTeam(id) {
+            if (!isAdminLoggedIn) { alert("Anda harus login Admin terlebih dahulu!"); return; }
+            const t = state.teams.find(x => x.id == id);
+            if (!t) return;
+            if (!confirm(`Hapus ${t.name}? Pemain yang terdaftar di tim ini akan dipindahkan ke Pool Pemain (Unassigned).`)) return;
+
+            if (supabaseClient) {
+                try {
+                    await supabaseClient.from('players').update({ team_id: null }).eq('team_id', id);
+                    await supabaseClient.from('teams').delete().eq('id', id);
+                    await fetchFromSupabase();
+                    renderAll();
+                    return;
+                } catch(err) {}
+            }
+
+            state.players.forEach(p => {
+                if (p.team_id == id) p.team_id = null;
+            });
+            state.teams = state.teams.filter(x => x.id != id);
+            saveState();
+        }
+
         function resetTeamForm() {
             document.getElementById('team-form-id').value = '';
             document.getElementById('team-form-name').value = '';
             document.getElementById('team-form-color').value = '#2563eb';
+            const submitBtn = document.getElementById('team-form-submit-btn');
+            if (submitBtn) submitBtn.innerText = "Simpan Tim";
         }
 
+        // ADMIN FORMS & ACTIONS FOR PLAYERS
         async function handlePlayerSubmit(e) {
             e.preventDefault();
             if (!isAdminLoggedIn) { alert("Anda harus login Admin terlebih dahulu!"); return; }
@@ -1744,7 +1855,7 @@
             saveState();
         }
 
-        // INTERACTIVE LIVE STAGE RANDOMIZER FUNCTIONS
+        // INTERACTIVE LIVE STAGE RANDOMIZER FUNCTIONS (SLOWED DOWN & FIX LAST PLAYER ASSIGNMENT)
         function openRandomizerModal() {
             document.getElementById('modal-randomizer').classList.remove('hidden');
             renderRandomizerLiveTeams();
@@ -1762,7 +1873,7 @@
                 return `
                     <div class="bg-gray-900 border border-gray-800 p-3.5 rounded-2xl space-y-2">
                         <div class="flex items-center space-x-2 border-b border-gray-800 pb-2">
-                            <div class="w-3 h-3 rounded-full" style="background-color: ${t.color}"></div>
+                            <div class="w-3.5 h-3.5 rounded-full flex-shrink-0" style="background-color: ${t.color}"></div>
                             <span class="font-bold text-xs text-white truncate">${t.name}</span>
                         </div>
                         <div class="space-y-1.5 min-h-[120px] text-[11px]">
@@ -1803,7 +1914,7 @@
             const slotName = document.getElementById('randomizer-slot-name');
             const slotPhoto = document.getElementById('randomizer-slot-photo');
 
-            // Animated slot spinning effect
+            // 1. SLOWER & DRAMATIC SPINNING (3.0 Seconds)
             let spinCounter = 0;
             const spinInterval = setInterval(() => {
                 const randomP = playersInGrade[Math.floor(Math.random() * playersInGrade.length)];
@@ -1814,12 +1925,12 @@
                     slotPhoto.innerText = randomP.name.charAt(0);
                 }
                 spinCounter++;
-            }, 60);
+            }, 50);
 
-            await new Promise(r => setTimeout(r, 1500));
+            await new Promise(r => setTimeout(r, 3000));
             clearInterval(spinInterval);
 
-            // Perform draft shuffle
+            // 2. Perform draft shuffle
             const countPerTeam = (grade === 'B') ? 2 : 1;
             const shuffled = [...playersInGrade];
             for (let i = shuffled.length - 1; i > 0; i--) {
@@ -1829,12 +1940,17 @@
 
             const teams = state.teams.slice(0, 4);
 
+            // 3. SLOWER DRAFT ANNOUNCEMENT & REALTIME VISUAL ASSIGNMENT (1.2 Seconds per Player)
             for (let idx = 0; idx < shuffled.length; idx++) {
                 const player = shuffled[idx];
                 const teamIdx = Math.floor(idx / countPerTeam) % teams.length;
+                
+                // Update local memory objects cleanly
                 player.team_id = teams[teamIdx].id;
+                const targetP = state.players.find(p => p.id === player.id);
+                if (targetP) targetP.team_id = teams[teamIdx].id;
 
-                slotName.innerText = `DRAFTED: ${player.name.toUpperCase()} ➔ ${teams[teamIdx].name.toUpperCase()}`;
+                slotName.innerText = `🎯 DRAFTED: ${player.name.toUpperCase()} ➔ ${teams[teamIdx].name.toUpperCase()}`;
                 if (player.photo) {
                     slotPhoto.innerHTML = `<img src="${player.photo}" class="w-full h-full object-cover">`;
                 } else {
@@ -1848,16 +1964,20 @@
                 }
 
                 renderRandomizerLiveTeams();
-                await new Promise(r => setTimeout(r, 400));
+                await new Promise(r => setTimeout(r, 1200));
             }
 
+            // Always save local state after loop
+            saveState();
+
+            // Delay before refetching from Supabase so PostgreSQL commits all rows including the last player
             if (supabaseClient) {
+                await new Promise(r => setTimeout(r, 300));
                 await fetchFromSupabase();
-            } else {
-                saveState();
             }
 
             renderAll();
+            renderRandomizerLiveTeams();
             document.getElementById('randomizer-status-text').innerText = `✅ SUKSES MENGACAK GRADE ${grade}!`;
         }
 
@@ -1873,7 +1993,7 @@
             const grades = ['C2', 'C1', 'B', 'A2', 'A1'];
             for (const grade of grades) {
                 await randomizeSingleGrade(grade);
-                await new Promise(r => setTimeout(r, 600));
+                await new Promise(r => setTimeout(r, 800));
             }
 
             document.getElementById('randomizer-status-text').innerText = "🎉 SELURUH GRADE BERHASIL DIACAK DENGAN SEIMBANG!";
